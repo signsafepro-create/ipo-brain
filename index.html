@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LILJR Sovereign Stack — Unified Command Platform</title>
+  <meta name="description" content="Sovereign Matrix Command Core — Unified chat hub, pitch deck, ROI calculator, swarm simulator, and architecture blueprint in one platform.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       CONSOLIDATED PLATFORM — PITCH DECK OVERLAY PANEL
+       All pitch.html content merged inline; no page navigation
+    ═══════════════════════════════════════════════════════════ */
+
+    /* ── PITCH OVERLAY BACKDROP ── */
+    #pitch-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(2, 3, 8, 0.96);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    #pitch-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── PITCH HEADER BAR ── */
+    .pitch-header {
+      height: 64px;
+      border-bottom: 1px solid var(--border-color);
+      background: rgba(4, 7, 20, 0.9);
+      backdrop-filter: var(--glass-blur);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+    }
+
+    .pitch-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pitch-brand-title {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 2px;
+    }
+
+    .pitch-brand-sub {
+      font-size: 11px;
+      color: var(--accent-purple);
+      font-family: var(--font-mono);
+    }
+
+    .pitch-tabs {
+      display: flex;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .pitch-tab {
+      padding: 7px 15px;
+      border-radius: 17px;
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .pitch-tab:hover { color: var(--accent-cyan); }
+    .pitch-tab.active {
+      background: var(--accent-cyan);
+      color: var(--text-dark);
+      box-shadow: var(--glow-shadow);
+    }
+
+    .btn-close-pitch {
+      background: rgba(255, 40, 40, 0.08);
+      border: 1px solid rgba(255, 40, 40, 0.25);
+      color: #ff6060;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-close-pitch:hover {
+      background: rgba(255, 40, 40, 0.15);
+      border-color: rgba(255, 40, 40, 0.5);
+    }
+
+    /* ── PITCH BODY ── */
+    .pitch-body {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tab-view {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.98) translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      overflow-y: auto;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .tab-view.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+    }
+
+    /* ── TAB 1: SLIDE DECK ── */
+    .deck-frame {
+      width: 100%;
+      max-width: 1000px;
+      aspect-ratio: 16 / 9;
+      background: rgba(6, 9, 22, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      backdrop-filter: var(--glass-blur);
+      box-shadow: var(--glow-shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .slides-wrapper { flex: 1; position: relative; overflow: hidden; }
+
+    .deck-slide {
+      position: absolute;
+      inset: 0;
+      padding: 40px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(30px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .deck-slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    .slide-badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 4px 12px;
+      border: 1px solid var(--border-color);
+      background: rgba(0, 243, 255, 0.08);
+      color: var(--accent-cyan);
+      font-family: var(--font-display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      border-radius: 4px;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+
+    .slide-title {
+      font-family: var(--font-display);
+      font-size: 34px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #fff, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .slide-body-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      max-width: 800px;
+    }
+
+    .slide-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      width: 100%;
+    }
+
+    .slide-card {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 18px;
+      transition: var(--transition);
+    }
+    .slide-card:hover {
+      border-color: rgba(0, 243, 255, 0.2);
+      background: rgba(0, 243, 255, 0.02);
+    }
+    .slide-card h4 { font-family: var(--font-display); font-size: 13px; color: var(--accent-cyan); margin-bottom: 8px; }
+    .slide-card p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+    .deck-controls {
+      height: 56px;
+      border-top: 1px solid var(--border-color);
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+    }
+
+    .deck-nav-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: var(--font-ui);
+      transition: var(--transition);
+    }
+    .deck-nav-btn:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      box-shadow: var(--glow-shadow);
+    }
+    .deck-progress { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+
+    /* ── TAB 2: ROI CALCULATOR ── */
+    .calculator-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .calculator-sidebar {
+      background: rgba(6, 9, 22, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .calc-title {
+      font-family: var(--font-display);
+      font-size: 13px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .input-group { display: flex; flex-direction: column; gap: 5px; }
+    .input-group label { font-size: 10px; font-family: var(--font-ui); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .calc-input {
+      width: 100%;
+      padding: 9px 11px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 7px;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+    .calc-input:focus { border-color: var(--accent-cyan); outline: none; box-shadow: 0 0 8px rgba(0, 243, 255, 0.1); }
+
+    .calculator-main {
+      background: rgba(6, 9, 22, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+    .result-card {
+      background: rgba(255,255,255,0.01);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .result-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
+    .result-val { font-family: var(--font-mono); font-size: 22px; font-weight: 700; color: var(--accent-cyan); }
+    .result-val.fire { color: #ff7b00; text-shadow: 0 0 10px rgba(255, 123, 0, 0.2); }
+
+    .chart-container {
+      flex: 1;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 220px;
+    }
+
+    /* ── TAB 3: SWARM SIMULATOR ── */
+    .simulator-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .honeycomb-container {
+      background: rgba(6, 9, 22, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .agent-matrix {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      min-height: 240px;
+    }
+
+    .agent-node {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+    .agent-node:hover { border-color: var(--accent-cyan); background: rgba(0, 243, 255, 0.04); transform: translateY(-2px); }
+    .agent-node.active-sim { border-color: var(--accent-cyan); box-shadow: var(--glow-shadow); background: rgba(0, 243, 255, 0.02); }
+    .agent-node-icon { font-size: 22px; }
+    .agent-node-name { font-family: var(--font-display); font-size: 11px; font-weight: 700; }
+    .agent-node-status { font-size: 9px; padding: 2px 6px; border-radius: 4px; background: rgba(255,255,255,0.05); text-transform: uppercase; font-weight: 700; }
+    .agent-node.online .agent-node-status { background: rgba(0, 243, 255, 0.1); color: var(--accent-cyan); }
+    .agent-node.busy .agent-node-status { background: rgba(188, 19, 254, 0.1); color: #bc13fe; }
+
+    .sim-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-sim-action {
+      flex: 1;
+      min-width: 120px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 7px;
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-sim-action:hover { background: rgba(0, 243, 255, 0.08); border-color: var(--accent-cyan); box-shadow: var(--glow-shadow); }
+
+    /* ── TAB 4: BLUEPRINT ── */
+    .blueprint-frame {
+      width: 100%;
+      max-width: 1000px;
+      background: rgba(6, 9, 22, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .blueprint-graph {
+      height: 340px;
+      border: 1px solid rgba(255,255,255,0.05);
+      background: rgba(0,0,0,0.9) url('facility_blueprint.jpg');
+      background-size: cover;
+      background-position: center bottom;
+      background-blend-mode: overlay;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1200px;
+      box-shadow: inset 0 0 100px rgba(0, 243, 255, 0.08);
+    }
+    .blueprint-graph::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.9) 100%);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .blueprint-graph svg {
+      filter: drop-shadow(0px 0px 25px rgba(0, 243, 255, 0.4));
+      transform: rotateX(60deg) rotateZ(-45deg) scale(1.4);
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .blueprint-graph:hover svg { transform: rotateX(50deg) rotateZ(-35deg) scale(1.5); }
+
+    .blueprint-node-desc {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .blueprint-node-title { font-family: var(--font-display); font-size: 14px; color: var(--accent-cyan); margin-bottom: 8px; border-bottom: 1px solid rgba(0, 243, 255, 0.1); padding-bottom: 6px; }
+    .blueprint-node-desc pre {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 10px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--accent-cyan);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: 10px;
+      overflow-x: auto;
+    }
+    .blueprint-grid-details { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px; }
+    .bp-detail-col h5 { font-family: var(--font-display); color: #fff; font-size: 10px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .bp-detail-col p { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+
+    .flow-line { stroke-dasharray: 12, 12; animation: dashOffset 6s linear infinite; }
+    @keyframes dashOffset { to { stroke-dashoffset: -80; } }
+    .bp-group:hover circle { r: 38; stroke-width: 3px; filter: drop-shadow(0 0 10px var(--accent-cyan)); }
+    .bp-group { transition: all 0.3s; }
+
+    /* ── NAV BUTTON UPDATE ── */
+    .btn-open-pitch {
+      background: rgba(0, 243, 255, 0.06);
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      color: var(--accent-cyan);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      letter-spacing: 0.5px;
+    }
+    .btn-open-pitch:hover {
+      background: rgba(0, 243, 255, 0.12);
+      box-shadow: var(--glow-shadow);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .pitch-tabs { display: none; }
+      .calculator-layout, .simulator-layout { grid-template-columns: 1fr; }
+      .slide-grid { grid-template-columns: 1fr 1fr; }
+      .agent-matrix { grid-template-columns: repeat(2, 1fr); }
+      .results-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .slide-grid { grid-template-columns: 1fr; }
+      .blueprint-grid-details { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="s42-noise">
+
+  <!-- Ambient FX overlays -->
+  <div class="matrix-bg"></div>
+  <div class="matrix-grid"></div>
+  <div class="scanlines"></div>
+  <div class="laser-line"></div>
+
+  <!-- ══════════════════════════════════════════════
+       PITCH DECK OVERLAY (merged from pitch.html)
+  ══════════════════════════════════════════════ -->
+  <div id="pitch-overlay" role="dialog" aria-label="Presentation Deck">
+    
+    <!-- Header -->
+    <header class="pitch-header">
+      <div class="pitch-brand">
+        <div class="logo-icon" style="width:32px;height:32px;"></div>
+        <div>
+          <div class="pitch-brand-title">SOVEREIGN OS</div>
+          <div class="pitch-brand-sub">Pitch &amp; Presentation Core</div>
+        </div>
+      </div>
+
+      <div class="pitch-tabs" id="pitch-tab-bar">
+        <span class="pitch-tab active" data-tab="slides">1. Pitch Slides</span>
+        <span class="pitch-tab" data-tab="calculator">2. ROI Calculator</span>
+        <span class="pitch-tab" data-tab="swarm">3. Swarm Sandbox</span>
+        <span class="pitch-tab" data-tab="blueprint">4. Blueprint Specs</span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="theme-pill-container">
+          <span class="theme-pill active" data-theme="nebula">Nebula</span>
+          <span class="theme-pill" data-theme="squadron">Squadron</span>
+          <span class="theme-pill" data-theme="amber">Amber</span>
+        </div>
+        <button class="btn-close-pitch" id="btn-close-pitch" onclick="closePitchDeck()">✕ Close</button>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <main class="pitch-body">
+
+      <!-- ── TAB 1: SLIDE DECK ── -->
+      <section class="tab-view active" id="view-slides">
+        <div class="deck-frame">
+          <div class="slides-wrapper" id="slides-container">
+
+            <div class="deck-slide active">
+              <span class="slide-badge">01. TITLE</span>
+              <h2 class="slide-title">LIL.JR 3.0: Sovereign Agent OS</h2>
+              <p class="slide-body-text">Not a subscription chatbot. A fully autonomous, revenue-producing digital workforce owned entirely by you. Sovereign Core executes locally, swarming 103 micro-agents in parallel to run workflows, databases, and safe auto-fix checks.</p>
+              <div class="slide-grid">
+                <div class="slide-card"><h4>🏛️ Zero Dependency</h4><p>Permanent, local-first computing clusters. Free from cloud censorship or monthly rental fees.</p></div>
+                <div class="slide-card"><h4>⚡ 103 Agent Swarm</h4><p>A digital civilization of task workers, legal processors, validators, and financial nodes.</p></div>
+                <div class="slide-card"><h4>💰 Revenue Positive</h4><p>Earns, consolidates, and stores asset value directly in localized SQLite ledgers.</p></div>
+              </div>
+            </div>
+
+            <div class="deck-slide">
+              <span class="slide-badge">02. THE CHALLENGE</span>
+              <h2 class="slide-title">The Subscription Trap</h2>
+              <p class="slide-body-text">Businesses spend thousands renting API wrappers monthly. Your data is uploaded to corporate servers, your agents fail when their endpoints go down, and you build no assets or long-term equity.</p>
+              <div class="slide-grid">
+                <div class="slide-card" style="border-color: var(--accent-pink);"><h4>💸 Infinite Rent</h4><p>Paying monthly seat licensing fees forever. Wasted capital that builds no asset valuation.</p></div>
+                <div class="slide-card" style="border-color: var(--accent-pink);"><h4>🔒 Data Extradition</h4><p>Sensitive enterprise blueprints, contracts, and database records hosted on external third-party servers.</p></div>
+                <div class="slide-card" style="border-color: var(--accent-pink);"><h4>⚠️ Revocable Access</h4><p>Your business workflows are subject to rate limiting, terms changes, and subscription hikes.</p></div>
+              </div>
+            </div>
+
+            <div class="deck-slide">
+              <span class="slide-badge">03. THE SOLUTION</span>
+              <h2 class="slide-title">The Sovereign Solution</h2>
+              <p class="slide-body-text">By compiling local-first agent containers on your own workspace infrastructure, LIL.JR 3.0 creates permanent, self-updating asset equity.</p>
+              <div class="slide-grid">
+                <div class="slide-card"><h4>📂 Local SQLite Core</h4><p>Neural memory database structures stored locally. Complete data privacy and 100% control.</p></div>
+                <div class="slide-card"><h4>🧬 Self-Healing Code</h4><p>Integrated Auto-Fix trace diagnosis sandbox check compiles and installs bug patches safely.</p></div>
+                <div class="slide-card"><h4>💳 Custom Payments</h4><p>Seamless processing interfaces for custom Stripe invoice creation and decentralized memory Ledgers.</p></div>
+              </div>
+            </div>
+
+            <div class="deck-slide">
+              <span class="slide-badge">04. OPERATION</span>
+              <h2 class="slide-title">103 Agent Civilization</h2>
+              <p class="slide-body-text">Our agent network distributes tasks down to micro-workers operating in parallel, audited continuously by a system watchdog module.</p>
+              <div class="slide-grid">
+                <div class="slide-card"><h4>👨‍💻 Developer Nodes</h4><p>Writes scripts, coordinates packages, and compiles updates automatically.</p></div>
+                <div class="slide-card"><h4>⚖️ Legal Architect</h4><p>Audits contracts, drafts jurisdictional templates, and parses compliance lists.</p></div>
+                <div class="slide-card"><h4>💰 Arbitrage Swarm</h4><p>Queries pricing API matrices to flag optimal pricing valuations and revenue opportunities.</p></div>
+              </div>
+            </div>
+
+            <div class="deck-slide">
+              <span class="slide-badge">05. SECURITY HUD</span>
+              <h2 class="slide-title">Hardened Cybernetic Security</h2>
+              <p class="slide-body-text">Built-in lock-down modes, device fingerprinting, threat matrix detection, and multi-factor validation protect your digital assets from external compromises.</p>
+              <div class="slide-grid">
+                <div class="slide-card"><h4>🔒 Security Lockdown</h4><p>Kills active sessions and isolates backend networks immediately when threats scale.</p></div>
+                <div class="slide-card"><h4>🧬 Biometric Logs</h4><p>Integrates wake-word fingerprinting and vocal identification schemas.</p></div>
+                <div class="slide-card"><h4>🛡️ Allowlist Guard</h4><p>Strict parameter parsing rules block command injection or file corruption attempts.</p></div>
+              </div>
+            </div>
+
+            <div class="deck-slide">
+              <span class="slide-badge">06. ECONOMIC MATH</span>
+              <h2 class="slide-title">Flawless ROI Projection</h2>
+              <p class="slide-body-text">Replacing cloud wrappers with local sovereign clusters yields massive financial savings. Instead of renting compute as an expense, build sovereign assets that scale developer productivity by 8x.</p>
+              <div class="slide-grid">
+                <div class="slide-card"><h4>📉 92% Cost Reduction</h4><p>Zero monthly seats licensing. Wasted SaaS fees reclaimed into cash reserves.</p></div>
+                <div class="slide-card"><h4>⏱️ Instant Payback</h4><p>Deployment overhead breaks-even within 45 days of deployment integration.</p></div>
+                <div class="slide-card"><h4>📈 Infinite Expansion</h4><p>Add nodes and agents as needed without scaling licensing fees.</p></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="deck-controls">
+            <button class="deck-nav-btn" id="btn-prev-slide">← Previous</button>
+            <span class="deck-progress" id="slide-number-indicator">Slide 1 / 6</span>
+            <button class="deck-nav-btn" id="btn-next-slide">Next →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB 2: ROI CALCULATOR ── -->
+      <section class="tab-view" id="view-calculator">
+        <div class="calculator-layout">
+          <div class="calculator-sidebar">
+            <div class="calc-title">Calculator Inputs</div>
+            <div class="input-group"><label for="inp-employees">Company Headcount</label><input type="number" id="inp-employees" class="calc-input" value="15" min="1" oninput="runCalculator()"></div>
+            <div class="input-group"><label for="inp-saas">SaaS AI Cost / Seat / Mo ($)</label><input type="number" id="inp-saas" class="calc-input" value="40" min="0" oninput="runCalculator()"></div>
+            <div class="input-group"><label for="inp-api">Monthly Token API Burn ($)</label><input type="number" id="inp-api" class="calc-input" value="1200" min="0" oninput="runCalculator()"></div>
+            <div class="input-group"><label for="inp-dev-rate">Developer Hourly Rate ($)</label><input type="number" id="inp-dev-rate" class="calc-input" value="65" min="1" oninput="runCalculator()"></div>
+            <div class="input-group" style="border-top: 1px dashed var(--border-color); padding-top: 10px; margin-top: 5px;">
+              <label for="inp-bill-rate" style="color: var(--accent-purple);">Agent Billing Rate / Hr ($)</label>
+              <input type="number" id="inp-bill-rate" class="calc-input" value="50" min="0" oninput="runCalculator()">
+            </div>
+            <div class="input-group"><label for="inp-bill-hours" style="color: var(--accent-purple);">Agent Billable Hrs / Mo</label><input type="number" id="inp-bill-hours" class="calc-input" value="160" min="0" oninput="runCalculator()"></div>
+            <div class="input-group"><label for="inp-margin" style="color: #ff7b00;">Swarms Margin Capture %</label><input type="number" id="inp-margin" class="calc-input" value="15" min="0" oninput="runCalculator()"></div>
+          </div>
+
+          <div class="calculator-main">
+            <div class="calc-title">ROI Audit &amp; Valuation Output</div>
+            <div class="results-grid">
+              <div class="result-card"><div class="result-label">12-Mo Cloud Rent Burn</div><div class="result-val fire" id="out-cloud-burn">$21,600</div></div>
+              <div class="result-card"><div class="result-label">12-Mo Sovereign Cost</div><div class="result-val" id="out-sov-cost">$2,400</div></div>
+              <div class="result-card"><div class="result-label">Capital Reclaimed (Net)</div><div class="result-val" style="color: #10b981;" id="out-savings">$19,200</div></div>
+              <div class="result-card"><div class="result-label">12-Mo Agent Billable</div><div class="result-val" style="color: #bc13fe;" id="out-revenue">$96,000</div></div>
+              <div class="result-card"><div class="result-label">12-Mo Arbitrage Cut</div><div class="result-val" style="color: #ff7b00;" id="out-arbitrage">$14,400</div></div>
+              <div class="result-card"><div class="result-label">Total Financial Value</div><div class="result-val" style="color: #00f3ff; text-shadow: 0 0 10px rgba(0,243,255,0.4);" id="out-total-value">$129,600</div></div>
+            </div>
+            <div class="chart-container">
+              <svg id="calc-svg" width="600" height="220" style="background: transparent; overflow: visible;"></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB 3: SWARM SANDBOX ── -->
+      <section class="tab-view" id="view-swarm">
+        <div class="simulator-layout">
+          <div class="honeycomb-container">
+            <div class="calc-title">Agent Honeycomb Matrix (Active: 8 / 103)</div>
+            <div class="agent-matrix">
+              <div class="agent-node online" data-agent="developer" onclick="selectSimAgent('developer')"><div class="agent-node-icon">👨‍💻</div><div class="agent-node-name">Dev Cluster</div><div class="agent-node-status">Online</div></div>
+              <div class="agent-node online" data-agent="legal" onclick="selectSimAgent('legal')"><div class="agent-node-icon">⚖️</div><div class="agent-node-name">Legal Node</div><div class="agent-node-status">Online</div></div>
+              <div class="agent-node online" data-agent="arbitrage" onclick="selectSimAgent('arbitrage')"><div class="agent-node-icon">💰</div><div class="agent-node-name">Arbitrage Swarm</div><div class="agent-node-status">Online</div></div>
+              <div class="agent-node online" data-agent="validator" onclick="selectSimAgent('validator')"><div class="agent-node-icon">🛡️</div><div class="agent-node-name">Validator Core</div><div class="agent-node-status">Online</div></div>
+              <div class="agent-node busy" data-agent="autofix" onclick="selectSimAgent('autofix')"><div class="agent-node-icon">🛠️</div><div class="agent-node-name">Auto-Fix</div><div class="agent-node-status">Compiling</div></div>
+              <div class="agent-node online" data-agent="marketer" onclick="selectSimAgent('marketer')"><div class="agent-node-icon">📢</div><div class="agent-node-name">Marketer Swarm</div><div class="agent-node-status">Online</div></div>
+              <div class="agent-node online" data-agent="support" onclick="selectSimAgent('support')"><div class="agent-node-icon">🤝</div><div class="agent-node-name">Support Client</div><div class="agent-node-status">Online</div></div>
+              <div class="agent-node online" data-agent="watchdog" onclick="selectSimAgent('watchdog')"><div class="agent-node-icon">👁️</div><div class="agent-node-name">Watchdog Engine</div><div class="agent-node-status">Online</div></div>
+            </div>
+            <div class="sim-controls">
+              <button class="btn-sim-action" onclick="triggerSimAction('boot')">Boot Swarm Nodes</button>
+              <button class="btn-sim-action" onclick="triggerSimAction('compile')">Validate Build</button>
+              <button class="btn-sim-action" onclick="triggerSimAction('arbitrage')">Scan Arbitrage</button>
+              <button class="btn-sim-action" onclick="triggerSimAction('lockdown')">Security Scan</button>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div class="event-logs-container" style="min-height:220px;background:rgba(0,0,0,0.5);">
+              <div class="calc-title">SIMULATOR OUTPUT FEED</div>
+              <div class="log-scroll" id="sim-log-scroll-area"></div>
+            </div>
+            <div class="blueprint-node-desc" id="sim-agent-details">
+              <div class="blueprint-node-title">Node Diagnostics</div>
+              <p style="font-size:13px;color:var(--text-muted);line-height:1.4;">Click any node in the honeycomb matrix above to pull live agent diagnostics, thread priority, and telemetry parameters.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB 4: ARCHITECTURE BLUEPRINT ── -->
+      <section class="tab-view" id="view-blueprint">
+        <div class="blueprint-frame">
+          <div class="calc-title">Sovereign Matrix Connectivity Map</div>
+          <div class="blueprint-graph">
+            <canvas id="live-blueprint-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;mix-blend-mode:screen;opacity:0.8;"></canvas>
+            <svg width="800" height="220" style="overflow:visible;position:relative;z-index:5;">
+              <defs>
+                <linearGradient id="glow-cyan" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00f3ff" stop-opacity="0.8"/><stop offset="100%" stop-color="#0066ff" stop-opacity="0.3"/></linearGradient>
+                <linearGradient id="glow-purple" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#bc13fe" stop-opacity="0.8"/><stop offset="100%" stop-color="#5500aa" stop-opacity="0.3"/></linearGradient>
+                <linearGradient id="glow-orange" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff7b00" stop-opacity="0.8"/><stop offset="100%" stop-color="#aa3300" stop-opacity="0.3"/></linearGradient>
+                <linearGradient id="glow-green" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#10b981" stop-opacity="0.8"/><stop offset="100%" stop-color="#045a3f" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <path d="M 120 110 L 330 110" class="flow-line" stroke="var(--accent-cyan)" stroke-width="2" fill="none"/>
+              <path d="M 330 110 L 550 50" class="flow-line" stroke="#ff7b00" stroke-width="2" fill="none"/>
+              <path d="M 330 110 L 550 170" class="flow-line" stroke="#10b981" stroke-width="2" fill="none"/>
+              <path d="M 550 50 L 700 110" class="flow-line" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" fill="none"/>
+              <path d="M 550 170 L 700 110" class="flow-line" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" fill="none"/>
+              <g class="bp-group" cursor="pointer" onclick="selectBlueprintNode('core')"><circle cx="120" cy="110" r="35" fill="url(#glow-cyan)" stroke="var(--accent-cyan)" stroke-width="1.5"/><circle cx="120" cy="110" r="40" fill="none" stroke="var(--accent-cyan)" stroke-opacity="0.2" stroke-width="1"/><text x="120" y="114" fill="#fff" font-family="Orbitron" font-weight="bold" font-size="9" text-anchor="middle">SOV CORE</text><text x="120" y="125" fill="var(--accent-cyan)" font-family="Share Tech Mono" font-size="7" text-anchor="middle">PORT 8794</text></g>
+              <g class="bp-group" cursor="pointer" onclick="selectBlueprintNode('eventbus')"><circle cx="330" cy="110" r="35" fill="url(#glow-purple)" stroke="var(--accent-purple)" stroke-width="1.5"/><circle cx="330" cy="110" r="40" fill="none" stroke="var(--accent-purple)" stroke-opacity="0.2" stroke-width="1"/><text x="330" y="114" fill="#fff" font-family="Orbitron" font-weight="bold" font-size="9" text-anchor="middle">EVENT BUS</text><text x="330" y="125" fill="var(--accent-purple)" font-family="Share Tech Mono" font-size="7" text-anchor="middle">PUB / SUB</text></g>
+              <g class="bp-group" cursor="pointer" onclick="selectBlueprintNode('swarms')"><circle cx="550" cy="50" r="30" fill="url(#glow-orange)" stroke="#ff7b00" stroke-width="1.5"/><circle cx="550" cy="50" r="35" fill="none" stroke="#ff7b00" stroke-opacity="0.2" stroke-width="1"/><text x="550" y="53" fill="#fff" font-family="Orbitron" font-weight="bold" font-size="8" text-anchor="middle">SWARMS</text><text x="550" y="62" fill="#ff7b00" font-family="Share Tech Mono" font-size="7" text-anchor="middle">103 NODES</text></g>
+              <g class="bp-group" cursor="pointer" onclick="selectBlueprintNode('autofix')"><circle cx="550" cy="170" r="30" fill="url(#glow-green)" stroke="#10b981" stroke-width="1.5"/><circle cx="550" cy="170" r="35" fill="none" stroke="#10b981" stroke-opacity="0.2" stroke-width="1"/><text x="550" y="173" fill="#fff" font-family="Orbitron" font-weight="bold" font-size="8" text-anchor="middle">AUTOFIX</text><text x="550" y="182" fill="#10b981" font-family="Share Tech Mono" font-size="7" text-anchor="middle">HEALING</text></g>
+              <g class="bp-group" cursor="pointer" onclick="selectBlueprintNode('database')"><circle cx="700" cy="110" r="30" fill="url(#glow-cyan)" stroke="var(--accent-cyan)" stroke-width="1.5"/><circle cx="700" cy="110" r="35" fill="none" stroke="var(--accent-cyan)" stroke-opacity="0.2" stroke-width="1"/><text x="700" y="113" fill="#fff" font-family="Orbitron" font-weight="bold" font-size="8" text-anchor="middle">SQLITE DB</text><text x="700" y="122" fill="var(--accent-cyan)" font-family="Share Tech Mono" font-size="7" text-anchor="middle">ENCRYPTED</text></g>
+            </svg>
+          </div>
+          <div class="blueprint-node-desc" id="blueprint-details-card">
+            <div class="blueprint-node-title" id="bp-title">Core Node Specs</div>
+            <p id="bp-desc" style="font-size:13px;line-height:1.6;color:var(--text-muted);">Select any node in the SVG connectivity map above to pull full specifications, packet shapes, failover hierarchies, and routing logic parameters.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  <!-- END PITCH OVERLAY -->
+
+
+  <!-- ══════════════════════════════════════════════
+       MAIN PLATFORM (Chat Hub)
+  ══════════════════════════════════════════════ -->
+  <div id="app-container">
+    
+    <!-- ── LEFT PANEL: SIDEBAR HISTORY ── -->
+    <aside class="sidebar" id="sidebar-panel">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="logo-icon"></div>
+          <span class="logo-text">SOVEREIGN</span>
+        </div>
+        <button class="btn-new-chat" onclick="createNewSession()">
+          <span>+</span> New Matrix Command
+        </button>
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" id="search-history" placeholder="Search logs..." oninput="renderSidebar()">
+        </div>
+      </div>
+
+      <div class="sidebar-scroll" id="history-scroll-area">
+        <!-- History Items loaded dynamically -->
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-panel">
+          <div class="user-avatar"></div>
+          <div class="user-info">
+            <div class="user-name">Commander X</div>
+            <div class="user-status">Core Level 5</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── CENTER PANEL: CHAT HUB ── -->
+    <main class="main-workspace">
+      <!-- Nav Top Header -->
+      <nav class="top-nav">
+        <div class="nav-left">
+          <button class="btn-toggle-sidebar" onclick="toggleSidebar()">☰ Toggle Sidebar</button>
+          <div class="active-chat-info">
+            <h1 class="active-chat-title" id="active-title-label">Sovereign System Core Init</h1>
+            <span class="active-chat-model" id="active-model-label">Gemini 3.5 Flash</span>
+          </div>
+        </div>
+        <div class="nav-right">
+          <!-- UNIFIED: open pitch overlay instead of separate page -->
+          <button class="btn-open-pitch" id="btn-open-pitch" onclick="openPitchDeck()">📊 Presentation Deck</button>
+          <div class="theme-pill-container">
+            <span class="theme-pill active" data-theme="nebula">Nebula</span>
+            <span class="theme-pill" data-theme="squadron">Squadron 42</span>
+            <span class="theme-pill" data-theme="amber">Amber</span>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Multi Model Selector Cards -->
+      <div class="model-selector-container">
+        <div class="model-card active" data-model="gemini">
+          <div class="model-card-header">
+            <div class="model-badge"></div>
+            <span class="model-name">Gemini 3.5 Flash</span>
+          </div>
+          <p class="model-desc">Optimal fast processing speed. Ideal for conversations and quick scans.</p>
+        </div>
+        <div class="model-card" data-model="claude">
+          <div class="model-card-header">
+            <div class="model-badge"></div>
+            <span class="model-name">Claude 3.5 Sonnet</span>
+          </div>
+          <p class="model-desc">Deep reasoning. Best suited for system logic audit and detailed plan designs.</p>
+        </div>
+        <div class="model-card" data-model="sovereign">
+          <div class="model-card-header">
+            <div class="model-badge"></div>
+            <span class="model-name">Sovereign Overmind</span>
+          </div>
+          <p class="model-desc">Autonomous engine. Manages event loops, file pipelines, and builds.</p>
+        </div>
+        <div class="model-card" data-model="autofix">
+          <div class="model-card-header">
+            <div class="model-badge"></div>
+            <span class="model-name">Auto-Fix Engine</span>
+          </div>
+          <p class="model-desc">Self-healing. Scans compilation errors, tracebacks, and outputs diff files.</p>
+        </div>
+      </div>
+
+      <!-- Chat Thread Feed -->
+      <div class="chat-scroll" id="chat-feed">
+        <!-- Message bubbles rendered dynamically -->
+      </div>
+
+      <!-- Input composer panel -->
+      <div class="composer-panel">
+        <div class="composer-chips">
+          <div class="quick-chip" onclick="document.getElementById('composer-text').value = '/status'; handleSendMessage();">/status</div>
+          <div class="quick-chip" onclick="document.getElementById('composer-text').value = '/scan'; handleSendMessage();">/scan files</div>
+          <div class="quick-chip" onclick="document.getElementById('composer-text').value = '/compile'; handleSendMessage();">/compile</div>
+          <div class="quick-chip" onclick="document.getElementById('composer-text').value = '/deploy'; handleSendMessage();">/deploy check</div>
+          <div class="quick-chip" onclick="openPitchDeck();">📊 Deck</div>
+        </div>
+        <div class="input-box-wrapper">
+          <button class="btn-composer-action" id="btn-mic" title="Voice Capture Input">🎙️</button>
+          <input type="text" class="composer-input" id="composer-text" placeholder="Enter prompt or run command (e.g. /status)..." autocomplete="off">
+          <button class="btn-composer-send" id="btn-send">
+            <span>Send</span> ➡️
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- ── RIGHT PANEL: SYSTEM METRICS HUD ── -->
+    <aside class="metrics-panel">
+      <!-- Voice Visualizer Section -->
+      <div class="panel-header">🎙️ VOICE MODULE</div>
+      <div class="visualizer-container">
+        <canvas id="voice-canvas" width="300" height="80"></canvas>
+        <div class="voice-status-indicator" id="voice-status-text">Waveform visualizer online.</div>
+        <div class="voice-controls-row">
+          <select id="voice-select" class="voice-select-box">
+            <!-- Loaded dynamically by TTS voices -->
+          </select>
+        </div>
+      </div>
+
+      <!-- Heartbeat Stats HUD -->
+      <div class="panel-header">📈 CORE HEARTBEAT</div>
+      <div class="stats-container">
+        <div class="stat-item">
+          <div class="stat-label-row"><span>CPU CORE LOAD</span><span class="stat-val" id="hud-cpu">14%</span></div>
+          <div class="stat-bar-outer"><div class="stat-bar-inner" id="bar-cpu" style="width: 14%;"></div></div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label-row"><span>ACTIVE SYSTEM THREADS</span><span class="stat-val" id="hud-threads">8/12</span></div>
+          <div class="stat-bar-outer"><div class="stat-bar-inner" id="bar-threads" style="width: 66%;"></div></div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label-row"><span>MEMORY CONSUMED</span><span class="stat-val" id="hud-memory">2.54 GB</span></div>
+          <div class="stat-bar-outer"><div class="stat-bar-inner" id="bar-memory" style="width: 31%;"></div></div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label-row"><span>THREAT MATRIX CONFLICTS</span><span class="stat-val" id="hud-threats">0</span></div>
+          <div class="stat-bar-outer"><div class="stat-bar-inner threat-gauge" id="bar-threats" style="width: 0%;"></div></div>
+        </div>
+      </div>
+
+      <!-- Realtime Event Bus Logs -->
+      <div class="panel-header">📟 EVENT BUS LOGS</div>
+      <div class="event-logs-container">
+        <div class="log-scroll" id="log-scroll-area">
+          <!-- Logs appended in real-time -->
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SCRIPTS — Consolidated: app.js + pitch logic
+  ══════════════════════════════════════════════ -->
+  <script src="app.js"></script>
+  <script>
+    /* ═══════════════════════════════════════════════════════════════
+       CONSOLIDATED PITCH ENGINE — Merged from pitch.js
+       Runs inline; no separate page load needed
+    ═══════════════════════════════════════════════════════════════ */
+
+    // ── PITCH OVERLAY OPEN / CLOSE ──
+    function openPitchDeck() {
+      const overlay = document.getElementById('pitch-overlay');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      // Re-init everything when opened
+      initSlides();
+      initPitchTabs();
+      runCalculator();
+      initLiveBlueprintCanvas();
+      selectSimAgent('watchdog');
+      selectBlueprintNode('core');
+      if (typeof synth !== 'undefined') synth.playBeep();
+    }
+
+    function closePitchDeck() {
+      const overlay = document.getElementById('pitch-overlay');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+      if (typeof synth !== 'undefined') synth.playClick();
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.getElementById('pitch-overlay').classList.contains('open')) {
+        closePitchDeck();
+      }
+    });
+
+    // ── AUDIO SYNTH (shared with app.js if available) ──
+    const pitchSynth = {
+      ctx: null,
+      init() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
+      tone(freq, dur = 0.08, type = 'sine') {
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + dur);
+        osc.start(); osc.stop(this.ctx.currentTime + dur);
+      }
+    };
+
+    // ── SLIDE DECK LOGIC ──
+    let currentSlide = 0;
+    let slides = [];
+    let slidesInitialized = false;
+
+    function initSlides() {
+      slides = document.querySelectorAll('.deck-slide');
+      slidesInitialized = true;
+      updateSlides();
+
+      const prevBtn = document.getElementById('btn-prev-slide');
+      const nextBtn = document.getElementById('btn-next-slide');
+
+      // Remove old listeners by cloning
+      const newPrev = prevBtn.cloneNode(true);
+      const newNext = nextBtn.cloneNode(true);
+      prevBtn.parentNode.replaceChild(newPrev, prevBtn);
+      nextBtn.parentNode.replaceChild(newNext, nextBtn);
+
+      newPrev.onclick = () => {
+        pitchSynth.tone(600, 0.08);
+        if (currentSlide > 0) { currentSlide--; updateSlides(); }
+      };
+      newNext.onclick = () => {
+        pitchSynth.tone(850, 0.08);
+        if (currentSlide < slides.length - 1) { currentSlide++; updateSlides(); }
+      };
+    }
+
+    function updateSlides() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === currentSlide);
+      });
+      const ind = document.getElementById('slide-number-indicator');
+      if (ind) ind.textContent = `Slide ${currentSlide + 1} / ${slides.length}`;
+    }
+
+    // ── PITCH TABS ──
+    function initPitchTabs() {
+      document.querySelectorAll('.pitch-tab').forEach(tab => {
+        tab.onclick = () => {
+          pitchSynth.tone(700, 0.06);
+          document.querySelectorAll('.pitch-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const targetView = tab.dataset.tab;
+          document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
+          const activeView = document.getElementById(`view-${targetView}`);
+          if (activeView) activeView.classList.add('active');
+          if (targetView === 'calculator') setTimeout(runCalculator, 50);
+        };
+      });
+    }
+
+    // ── ROI CALCULATOR ──
+    function runCalculator() {
+      const get = (id) => parseInt(document.getElementById(id)?.value) || 0;
+      const employees = get('inp-employees');
+      const saasRate = get('inp-saas');
+      const apiBurn = get('inp-api');
+      const billRate = get('inp-bill-rate');
+      const billHours = get('inp-bill-hours');
+      const marginPercent = get('inp-margin');
+
+      const monthlyCloud = (employees * saasRate) + apiBurn;
+      const monthlySovereign = 200;
+      const monthlyRevenue = billRate * billHours;
+      const totalCloud = monthlyCloud * 12;
+      const totalSovereign = 2400 + (monthlySovereign * 12);
+      const netSavings = Math.max(0, totalCloud - totalSovereign);
+      const totalRevenue = monthlyRevenue * 12;
+      const totalArbitrage = Math.floor((netSavings + totalRevenue) * (marginPercent / 100));
+      const totalFinancialValue = netSavings + totalRevenue + totalArbitrage;
+
+      const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = `$${val.toLocaleString()}`; };
+      set('out-cloud-burn', totalCloud);
+      set('out-sov-cost', totalSovereign);
+      set('out-savings', netSavings);
+      set('out-revenue', totalRevenue);
+      set('out-arbitrage', totalArbitrage);
+      set('out-total-value', totalFinancialValue);
+
+      const svg = document.getElementById('calc-svg');
+      if (!svg) return;
+      svg.innerHTML = '';
+
+      const W = 560, H = 200, P = 30;
+      const maxCost = Math.max(totalCloud, totalSovereign, totalFinancialValue, 10000);
+
+      for (let i = 0; i <= 4; i++) {
+        const yVal = P + (H - P * 2) * (i / 4);
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", P); line.setAttribute("y1", yVal);
+        line.setAttribute("x2", W - P); line.setAttribute("y2", yVal);
+        line.setAttribute("stroke", "rgba(255,255,255,0.05)"); line.setAttribute("stroke-width", "1");
+        svg.appendChild(line);
+      }
+
+      for (let m = 0; m <= 12; m += 2) {
+        const xVal = P + (W - P * 2) * (m / 12);
+        const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txt.setAttribute("x", xVal); txt.setAttribute("y", H - 5);
+        txt.setAttribute("fill", "var(--text-muted)"); txt.setAttribute("font-family", "Share Tech Mono");
+        txt.setAttribute("font-size", "10"); txt.setAttribute("text-anchor", "middle");
+        txt.textContent = m === 0 ? "Boot" : `M${m}`;
+        svg.appendChild(txt);
+      }
+
+      const getPoints = (type) => {
+        const pts = [];
+        for (let m = 0; m <= 12; m++) {
+          const x = P + (W - P * 2) * (m / 12);
+          let cost = 0;
+          if (type === 'sov') cost = 2400 + monthlySovereign * m;
+          else if (type === 'cloud') cost = monthlyCloud * m;
+          else { const ms = Math.max(0, (monthlyCloud * m) - (2400 + monthlySovereign * m)); const mr = monthlyRevenue * m; cost = ms + mr + (ms + mr) * (marginPercent / 100); }
+          const y = H - P - (cost / maxCost) * (H - P * 2);
+          pts.push({ x, y });
+        }
+        return pts;
+      };
+
+      const drawPath = (pts, color, dashed) => {
+        let d = `M ${pts[0].x} ${pts[0].y}`;
+        for (let i = 1; i < pts.length; i++) d += ` L ${pts[i].x} ${pts[i].y}`;
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", d); path.setAttribute("fill", "none");
+        path.setAttribute("stroke", color); path.setAttribute("stroke-width", "3");
+        if (dashed) path.setAttribute("stroke-dasharray", "4,4");
+        svg.appendChild(path);
+        const last = pts[pts.length - 1];
+        const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("cx", last.x); c.setAttribute("cy", last.y); c.setAttribute("r", "5"); c.setAttribute("fill", color);
+        svg.appendChild(c);
+      };
+
+      drawPath(getPoints('cloud'), "var(--accent-pink)", true);
+      drawPath(getPoints('sov'), "rgba(255,255,255,0.25)", false);
+      drawPath(getPoints('val'), "var(--accent-cyan)", false);
+
+      const addLabel = (x, y, text, color) => {
+        const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txt.setAttribute("x", x); txt.setAttribute("y", y); txt.setAttribute("fill", color);
+        txt.setAttribute("font-family", "Orbitron"); txt.setAttribute("font-size", "9"); txt.setAttribute("font-weight", "bold");
+        txt.textContent = text; svg.appendChild(txt);
+      };
+      addLabel(40, 20, "TOTAL SOVEREIGN FINANCIAL VALUE", "var(--accent-cyan)");
+      addLabel(40, 36, "CLOUD SUBSCRIPTION BURN", "var(--accent-pink)");
+      addLabel(40, 52, "SOVEREIGN SYSTEM OVERHEADS", "rgba(255,255,255,0.4)");
+    }
+
+    // ── SWARM AGENT NODES ──
+    const AGENT_INFO = {
+      developer: { name: "Developer Cluster", priority: "High Thread Group", desc: "Autonomous software development node. Handles environment bootstrapping, packages checkups, runs tests, and automates builds." },
+      legal: { name: "Legal Architect Node", priority: "Medium Thread Group", desc: "Legal engine parsing compliance metrics. Compiles jurisdiction documents, contract audits, and outputs non-disclosure templates." },
+      arbitrage: { name: "Arbitrage Swarm", priority: "High Thread Group", desc: "Financial agent querying exchange metrics. Monitors pricing anomalies, Stripe transaction intents, and audits invoice states." },
+      validator: { name: "Validator Core", priority: "High Thread Group", desc: "Nervous system auditor validating server tokens, active authentication sessions, database integrity blocks, and threat matrices." },
+      autofix: { name: "Auto-Fix Sandbox", priority: "Critical Thread Group", desc: "Self-healing debugger scanning error stack traces. Automatically produces Unified Diffs and proposes code patches safely." },
+      marketer: { name: "Marketer Swarm", priority: "Low Thread Group", desc: "Content generation worker drafting copies, emails, campaign targets, and mapping client engagement workflows." },
+      support: { name: "Support Client Portal", priority: "Medium Thread Group", desc: "Virtual help-desk parsing customer inquiries. Employs vector semantic indexes to fetch correct FAQ resources automatically." },
+      watchdog: { name: "Watchdog Engine", priority: "Critical Thread Group", desc: "System supervisor monitoring resource constraints. Kills locked loops and restarts idle network worker processes." }
+    };
+
+    function selectSimAgent(agentId) {
+      pitchSynth.tone(800, 0.08);
+      document.querySelectorAll('.agent-node').forEach(n => {
+        n.classList.toggle('active-sim', n.dataset.agent === agentId);
+      });
+      const data = AGENT_INFO[agentId];
+      if (data) {
+        const card = document.getElementById('sim-agent-details');
+        card.innerHTML = `<div class="blueprint-node-title">${data.name} [${data.priority}]</div><p style="font-size:13px;line-height:1.5;color:var(--text-muted);">${data.desc}</p>`;
+      }
+    }
+
+    function addSimLog(text, type = "info") {
+      const scroll = document.getElementById('sim-log-scroll-area');
+      if (!scroll) return;
+      const item = document.createElement('div');
+      item.className = `log-item ${type}`;
+      const ts = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      item.innerHTML = `[${ts}] ${text}`;
+      scroll.appendChild(item);
+      scroll.scrollTop = scroll.scrollHeight;
+    }
+
+    function triggerSimAction(action) {
+      const tones = { boot: 440, compile: 554, arbitrage: 659, lockdown: 330 };
+      pitchSynth.tone(tones[action] || 500, 0.1, action === 'lockdown' ? 'sawtooth' : 'triangle');
+      const logs = {
+        boot: [["Spinning up 103 micro-agent thread pools...", "info"], ["Sovereign core linked to event bus nodes.", "success"], ["Memory SQLite matrices initialized.", "success"]],
+        compile: [["Auditing repository codebase...", "info"], ["Validating index.html structures... [OK]", "success"], ["Checking style.css syntax... [OK]", "success"], ["Testing app.js synthesizer... [OK]", "success"], ["Compilation smoke check passed.", "success"]],
+        arbitrage: [["Arbitrage Swarm querying coin pricing rates...", "warning"], ["Checked Uniswap v3 liquid pools.", "info"], ["Checked ckBTC/ICP decentralized market margins.", "info"], ["Result: No execution gap found. System standby.", "info"]],
+        lockdown: [["Triggering global threat scan checks...", "warning"], ["Evaluating active login sessions... [SAFE]", "success"], ["Allowlist validator rules checked... [PASS]", "success"], ["Threat assessment: 0 active conflicts found.", "success"]]
+      };
+      const seq = logs[action] || [];
+      addSimLog(seq[0][0], seq[0][1]);
+      seq.slice(1).forEach(([msg, t], i) => setTimeout(() => addSimLog(msg, t), (i + 1) * 450));
+    }
+
+    // ── ARCHITECTURE BLUEPRINT NODES ──
+    const BP_INFO = {
+      core: {
+        title: "Sovereign Core Gateway (Orchestrator)",
+        desc: `<div class="blueprint-grid-details"><div class="bp-detail-col"><h5>Class Registry Reference</h5><p><code>core/gateway.py</code> &bull; IPC TCP Port: 8794</p><h5 style="margin-top:8px;">Orchestration Framework</h5><p>Maintains high-priority system daemons. Evaluates parameter filters, checks access tokens, audits cryptographically signed payloads, and allocates CPU thread loops safely.</p></div><div class="bp-detail-col"><h5>Core API Entry Schema</h5><pre>{\n  "session_token": "0xsecp256k1",\n  "intent": "system_diagnostic",\n  "parameters": {\n    "scan_depth": 2,\n    "verify_builds": true\n  },\n  "timestamp": 1786312540\n}</pre></div></div>`
+      },
+      eventbus: {
+        title: "Asynchronous Event Bus Middleware",
+        desc: `<div class="blueprint-grid-details"><div class="bp-detail-col"><h5>Class Registry Reference</h5><p><code>events/bus.py</code> &bull; Topic Broker Queue</p><h5 style="margin-top:8px;">Event Pub / Sub Broker</h5><p>Handles message routing between asynchronous workers. Includes rate throttling, automatic thread locks collection, and schedules heartbeat telemetry updates.</p></div><div class="bp-detail-col"><h5>Event Message Schema</h5><pre>{\n  "event_id": "9b1deb4d-3b7d",\n  "topic": "security.threat_alert",\n  "priority": "CRITICAL",\n  "payload": {\n    "lockdown_triggered": false\n  }\n}</pre></div></div>`
+      },
+      swarms: {
+        title: "103-Agent Swarm Coordination Cluster",
+        desc: `<div class="blueprint-grid-details"><div class="bp-detail-col"><h5>Class Registry Reference</h5><p><code>core/agents.py</code> &bull; Honeycomb Matrix allocation</p><h5 style="margin-top:8px;">Task Allocation Grid</h5><p>Distributes tasks dynamically to micro-agents. Coordinates marketing content engines, Stripe transaction lookups, legal contract checkers, and arbitrage valuation scrapers.</p></div><div class="bp-detail-col"><h5>Agent Node Telemetry State</h5><pre>{\n  "agent_id": "arbitrage_03",\n  "status": "POLLING_PRICES",\n  "telemetry": {\n    "cpu_pct": 3.4,\n    "ram_mb": 24.8\n  }\n}</pre></div></div>`
+      },
+      autofix: {
+        title: "Self-Healing Auto-Fix Debug Sandbox",
+        desc: `<div class="blueprint-grid-details"><div class="bp-detail-col"><h5>Class Registry Reference</h5><p><code>healing/auto_repair.py</code> &bull; Sandbox compiler</p><h5 style="margin-top:8px;">Syntax Diagnostics &amp; Patching</h5><p>Listens for traceback errors. Captures exception scopes, generates Unified Diffs via LLM endpoints, and runs AST checks before applying patches to disk repository.</p></div><div class="bp-detail-col"><h5>Safe Patch Diff payload</h5><pre>{\n  "file": "style.css",\n  "target_lines": [45, 48],\n  "diff": "- border: none;\n+ border: 1px solid var(--accent-cyan);",\n  "ast_verify": "SUCCESS"\n}</pre></div></div>`
+      },
+      database: {
+        title: "SQLite Neural Memory Storage Vault",
+        desc: `<div class="blueprint-grid-details"><div class="bp-detail-col"><h5>Class Registry Reference</h5><p><code>database/models.py</code> &bull; SQLite Connection Pool</p><h5 style="margin-top:8px;">Persistence Engine</h5><p>15 relation tables tracking sessions, event logs, allowlists, and credentials. Integrates automated daily AES-256 backup encryption cycles to local storage.</p></div><div class="bp-detail-col"><h5>Session Sync Record Schema</h5><pre>{\n  "session_id": "sess_1786312400",\n  "messages_count": 14,\n  "active_model": "gemini",\n  "db_integrity_hash": "a8f3b2cd78e0",\n  "last_backup": 1786312410\n}</pre></div></div>`
+      }
+    };
+
+    function selectBlueprintNode(nodeId) {
+      pitchSynth.tone(900, 0.08);
+      const data = BP_INFO[nodeId];
+      if (data) {
+        document.getElementById('bp-title').textContent = data.title;
+        document.getElementById('bp-desc').innerHTML = data.desc;
+      }
+    }
+
+    // ── LIVE CANVAS PARTICLE SYSTEM ──
+    let blueprintAnimActive = false;
+    function initLiveBlueprintCanvas() {
+      const canvas = document.getElementById('live-blueprint-canvas');
+      if (!canvas || blueprintAnimActive) return;
+      blueprintAnimActive = true;
+      const ctx = canvas.getContext('2d');
+      function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+      window.addEventListener('resize', resize); resize();
+      const particles = Array.from({ length: 150 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2 + 0.5,
+        speedX: (Math.random() - 0.5) * 1.5,
+        speedY: Math.random() * 2 + 0.5,
+        color: Math.random() > 0.5 ? '#00f3ff' : '#10b981',
+        alpha: Math.random()
+      }));
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p, i) => {
+          p.x += p.speedX; p.y -= p.speedY;
+          if (p.y < 0) { p.y = canvas.height; p.x = Math.random() * canvas.width; }
+          if (p.x < 0) p.x = canvas.width;
+          if (p.x > canvas.width) p.x = 0;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color === '#00f3ff' ? `rgba(0,243,255,${p.alpha})` : `rgba(16,185,129,${p.alpha})`;
+          ctx.shadowBlur = 15; ctx.shadowColor = p.color; ctx.fill();
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x, dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 70) {
+              ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(0,243,255,${0.4 - dist / 175})`; ctx.stroke();
+            }
+          }
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+  </script>
+</body>
+</html>
