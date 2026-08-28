@@ -38,11 +38,13 @@
       flex-direction: column;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      visibility: hidden;
+      transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), visibility 0.4s;
     }
     #pitch-overlay.open {
       opacity: 1;
       pointer-events: auto;
+      visibility: visible;
     }
 
     /* ── PITCH HEADER BAR ── */

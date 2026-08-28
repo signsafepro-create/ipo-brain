@@ -156,16 +156,35 @@ class SessionStore {
       if (!Array.isArray(this.sessions)) {
         this.sessions = [];
       }
+      if (this.sessions.length === 0) {
+        this.createDefaultSession();
+      }
     } catch (e) {
       this.sessions = [];
-    }
-    if (this.sessions.length === 0) {
-      this.createDefaultSession();
+      this.sessions.push({
+        id: 'session_' + Date.now(),
+        title: 'Sovereign System Core Init',
+        model: 'gemini',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        tag: 'SYS',
+        messages: [
+          {
+            role: 'bot',
+            sender: 'Ande X-Sovereign',
+            text: 'Sovereign Matrix Command online.\nUnified Auto-Fix, Voice Sync, and Event Bus diagnostics are live and ready for deployment.',
+            isSummary: false
+          }
+        ]
+      });
     }
   }
 
   save() {
-    localStorage.setItem(this.key, JSON.stringify(this.sessions));
+    try {
+      localStorage.setItem(this.key, JSON.stringify(this.sessions));
+    } catch (e) {
+      console.warn("localStorage is disabled in private browsing:", e);
+    }
   }
 
   createDefaultSession() {
