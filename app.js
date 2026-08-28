@@ -268,7 +268,25 @@ class VoiceManager {
   }
 
   loadVoices() {
-    this.voices = this.synth.getVoices();
+    this.voices = this.synth.getVoices().filter(v => {
+      const name = v.name.toLowerCase();
+      const lang = v.lang.toLowerCase();
+      // Keep premium English voices, Google voices, and high-quality Natural voices
+      const isEnglish = lang.startsWith('en');
+      const isPremium = name.includes('google') || name.includes('natural') || name.includes('microsoft') || name.includes('premium') || name.includes('siri');
+      return isEnglish && isPremium;
+    });
+    
+    // If no premium English voices found, fallback to generic English voices
+    if (this.voices.length === 0) {
+      this.voices = this.synth.getVoices().filter(v => v.lang.toLowerCase().startsWith('en'));
+    }
+    
+    // If still empty, get all voices
+    if (this.voices.length === 0) {
+      this.voices = this.synth.getVoices();
+    }
+
     const select = document.getElementById('voice-select');
     if (select) {
       select.innerHTML = '';
@@ -276,7 +294,8 @@ class VoiceManager {
         const opt = document.createElement('option');
         opt.value = idx;
         opt.textContent = `${v.name} (${v.lang})`;
-        if (v.name.includes('Google') || v.name.includes('Natural') || v.default) {
+        // Default to Google or Natural or first English voice
+        if (v.name.includes('Google') || v.name.includes('Natural') || idx === 0) {
           opt.selected = true;
           this.selectedVoice = v;
         }
