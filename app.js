@@ -150,7 +150,15 @@ let activeModel = 'gemini';
 class SessionStore {
   constructor() {
     this.key = 'sovereign_chat_sessions_v3';
-    this.sessions = JSON.parse(localStorage.getItem(this.key)) || [];
+    try {
+      const stored = localStorage.getItem(this.key);
+      this.sessions = stored ? JSON.parse(stored) : [];
+      if (!Array.isArray(this.sessions)) {
+        this.sessions = [];
+      }
+    } catch (e) {
+      this.sessions = [];
+    }
     if (this.sessions.length === 0) {
       this.createDefaultSession();
     }
@@ -218,7 +226,7 @@ class SessionStore {
 }
 
 const db = new SessionStore();
-let currentSessionId = db.sessions[0].id;
+let currentSessionId = (db.sessions && db.sessions[0]) ? db.sessions[0].id : '';
 
 // ── TTS VOICE ENGINE ──
 class VoiceManager {
@@ -786,7 +794,9 @@ function renderSidebar() {
       db.deleteSession(sess.id);
       renderSidebar();
       if (currentSessionId === sess.id) {
-        loadSession(db.sessions[0].id);
+        if (db.sessions && db.sessions[0]) {
+          loadSession(db.sessions[0].id);
+        }
       }
     };
 
