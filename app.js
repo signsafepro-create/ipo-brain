@@ -7,16 +7,22 @@
 class CyberSynth {
   constructor() {
     this.ctx = null;
+    this.droneGain = null;
+    this.droneOsc1 = null;
+    this.droneOsc2 = null;
+    this.isDroneActive = false;
   }
 
   init() {
     if (!this.ctx) {
-      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) this.ctx = new AudioCtx();
     }
   }
 
   playClick() {
     this.init();
+    if (!this.ctx) return;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     
@@ -24,18 +30,34 @@ class CyberSynth {
     gain.connect(this.ctx.destination);
     
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(800, this.ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(1500, this.ctx.currentTime + 0.08);
+    osc.frequency.setValueAtTime(900, this.ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1600, this.ctx.currentTime + 0.06);
     
-    gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.06);
     
     osc.start();
-    osc.stop(this.ctx.currentTime + 0.08);
+    osc.stop(this.ctx.currentTime + 0.06);
+  }
+
+  playKeyTick() {
+    this.init();
+    if (!this.ctx) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1200 + Math.random() * 400, this.ctx.currentTime);
+    gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.03);
+    osc.start();
+    osc.stop(this.ctx.currentTime + 0.03);
   }
 
   playBeep() {
     this.init();
+    if (!this.ctx) return;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     
@@ -43,7 +65,7 @@ class CyberSynth {
     gain.connect(this.ctx.destination);
     
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+    osc.frequency.setValueAtTime(640, this.ctx.currentTime);
     
     gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
@@ -54,6 +76,7 @@ class CyberSynth {
 
   playSuccess() {
     this.init();
+    if (!this.ctx) return;
     const time = this.ctx.currentTime;
     
     const playNote = (freq, start, duration) => {
@@ -65,7 +88,7 @@ class CyberSynth {
       osc.type = 'sine';
       osc.frequency.setValueAtTime(freq, start);
       
-      gain.gain.setValueAtTime(0.04, start);
+      gain.gain.setValueAtTime(0.05, start);
       gain.gain.exponentialRampToValueAtTime(0.001, start + duration);
       
       osc.start(start);
@@ -73,13 +96,14 @@ class CyberSynth {
     };
     
     playNote(523.25, time, 0.1); // C5
-    playNote(659.25, time + 0.08, 0.1); // E5
-    playNote(783.99, time + 0.16, 0.2); // G5
-    playNote(1046.50, time + 0.24, 0.3); // C6
+    playNote(659.25, time + 0.07, 0.1); // E5
+    playNote(783.99, time + 0.14, 0.15); // G5
+    playNote(1046.50, time + 0.21, 0.25); // C6
   }
 
   playWarning() {
     this.init();
+    if (!this.ctx) return;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     
@@ -88,13 +112,59 @@ class CyberSynth {
     
     osc.type = 'sawtooth';
     osc.frequency.setValueAtTime(220, this.ctx.currentTime);
-    osc.frequency.linearRampToValueAtTime(180, this.ctx.currentTime + 0.3);
+    osc.frequency.linearRampToValueAtTime(160, this.ctx.currentTime + 0.25);
     
     gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
+    gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
     
     osc.start();
-    osc.stop(this.ctx.currentTime + 0.3);
+    osc.stop(this.ctx.currentTime + 0.25);
+  }
+
+  toggleAmbientDrone() {
+    this.init();
+    if (!this.ctx) return false;
+
+    if (this.isDroneActive) {
+      if (this.droneGain) {
+        this.droneGain.gain.setTargetAtTime(0.0001, this.ctx.currentTime, 0.5);
+        setTimeout(() => {
+          try {
+            if (this.droneOsc1) this.droneOsc1.stop();
+            if (this.droneOsc2) this.droneOsc2.stop();
+          } catch(e) {}
+          this.isDroneActive = false;
+        }, 600);
+      }
+      return false;
+    } else {
+      const t = this.ctx.currentTime;
+      this.droneGain = this.ctx.createGain();
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(220, t);
+
+      this.droneOsc1 = this.ctx.createOscillator();
+      this.droneOsc1.type = 'sawtooth';
+      this.droneOsc1.frequency.setValueAtTime(55, t); // A1 sub-bass
+
+      this.droneOsc2 = this.ctx.createOscillator();
+      this.droneOsc2.type = 'sine';
+      this.droneOsc2.frequency.setValueAtTime(110.5, t); // Detuned octave
+
+      this.droneOsc1.connect(filter);
+      this.droneOsc2.connect(filter);
+      filter.connect(this.droneGain);
+      this.droneGain.connect(this.ctx.destination);
+
+      this.droneGain.gain.setValueAtTime(0.0001, t);
+      this.droneGain.gain.exponentialRampToValueAtTime(0.035, t + 1.2);
+
+      this.droneOsc1.start();
+      this.droneOsc2.start();
+      this.isDroneActive = true;
+      return true;
+    }
   }
 }
 
@@ -349,7 +419,7 @@ class VoiceManager {
 
 const voiceEngine = new VoiceManager();
 
-// ── CANVAS WAVEFORM VISUALIZER ──
+// ── MULTI-MODE CANVAS SCIFI VISUALIZER ──
 class Visualizer {
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
@@ -357,20 +427,62 @@ class Visualizer {
     this.ctx = this.canvas.getContext('2d');
     this.animationId = null;
     this.mode = 'idle'; // idle, speaking, listening
+    this.style = 'spectrum'; // waveform, spectrum, matrix, core
     this.points = [];
+    this.matrixDrops = [];
+    this.particles = [];
     this.initPoints();
+    this.initMatrix();
+    this.initParticles();
   }
 
   initPoints() {
     this.points = [];
-    for (let i = 0; i < 40; i++) {
+    const count = 32;
+    for (let i = 0; i < count; i++) {
       this.points.push({
-        x: (this.canvas.width / 40) * i + 5,
-        targetHeight: 2,
-        currentHeight: 2,
-        speed: 0.1 + Math.random() * 0.15
+        x: (this.canvas.width / count) * i + 4,
+        targetHeight: 4,
+        currentHeight: 4,
+        peak: 4,
+        peakHold: 0,
+        speed: 0.12 + Math.random() * 0.1
       });
     }
+  }
+
+  initMatrix() {
+    this.matrixDrops = [];
+    const cols = Math.floor(this.canvas.width / 14);
+    for (let i = 0; i < cols; i++) {
+      this.matrixDrops.push({
+        x: i * 14 + 7,
+        y: Math.random() * this.canvas.height,
+        speed: 1 + Math.random() * 2,
+        chars: "01アイウエオカキクケコサシスセソタチツテト10X"
+      });
+    }
+  }
+
+  initParticles() {
+    this.particles = [];
+    for (let i = 0; i < 30; i++) {
+      this.particles.push({
+        angle: (Math.PI * 2 / 30) * i,
+        radius: 18 + Math.random() * 10,
+        baseRadius: 18,
+        speed: 0.02 + Math.random() * 0.02,
+        size: 1.5 + Math.random() * 2
+      });
+    }
+  }
+
+  setStyle(styleName) {
+    this.style = styleName;
+    document.querySelectorAll('.vis-mode-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.style === styleName);
+    });
+    if (typeof synth !== 'undefined') synth.playClick();
   }
 
   setMode(mode) {
@@ -380,36 +492,120 @@ class Visualizer {
   start() {
     const draw = () => {
       if (!this.canvas || !this.ctx) return;
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      const W = this.canvas.width;
+      const H = this.canvas.height;
+      this.ctx.clearRect(0, 0, W, H);
 
-      const color = MODELS[activeModel].color;
-      this.ctx.fillStyle = color;
-      this.ctx.shadowBlur = 8;
-      this.ctx.shadowColor = color;
+      const color = MODELS[activeModel]?.color || '#00f3ff';
+      const isSpeaking = this.mode === 'speaking';
+      const isListening = this.mode === 'listening';
 
-      for (let i = 0; i < this.points.length; i++) {
-        const pt = this.points[i];
-        
-        // Calculate dynamic wave amplitude
-        if (this.mode === 'speaking') {
-          pt.targetHeight = Math.sin(Date.now() * 0.005 + i * 0.4) * 25 + 30;
-        } else if (this.mode === 'listening') {
-          pt.targetHeight = Math.random() * 45 + 5;
-        } else {
-          pt.targetHeight = Math.sin(Date.now() * 0.001 + i * 0.2) * 4 + 6;
+      if (this.style === 'spectrum') {
+        // ── 1. EQUALIZER SPECTRUM BARS ──
+        const barWidth = (W / this.points.length) - 2;
+        for (let i = 0; i < this.points.length; i++) {
+          const pt = this.points[i];
+          if (isSpeaking) {
+            pt.targetHeight = Math.abs(Math.sin(Date.now() * 0.008 + i * 0.35)) * (H * 0.75) + 6;
+          } else if (isListening) {
+            pt.targetHeight = Math.random() * (H * 0.8) + 4;
+          } else {
+            pt.targetHeight = Math.abs(Math.sin(Date.now() * 0.002 + i * 0.2)) * 8 + 4;
+          }
+
+          pt.currentHeight += (pt.targetHeight - pt.currentHeight) * pt.speed;
+          if (pt.currentHeight > pt.peak) {
+            pt.peak = pt.currentHeight;
+            pt.peakHold = 10;
+          } else {
+            if (pt.peakHold > 0) pt.peakHold--;
+            else pt.peak = Math.max(4, pt.peak - 0.8);
+          }
+
+          const x = i * (barWidth + 2);
+          const y = H - pt.currentHeight;
+
+          // Gradient bar
+          const grad = this.ctx.createLinearGradient(0, H, 0, y);
+          grad.addColorStop(0, `${color}33`);
+          grad.addColorStop(1, color);
+
+          this.ctx.fillStyle = grad;
+          this.ctx.shadowBlur = 6;
+          this.ctx.shadowColor = color;
+          this.ctx.fillRect(x, y, barWidth, pt.currentHeight);
+
+          // Peak cap
+          this.ctx.fillStyle = '#ffffff';
+          this.ctx.fillRect(x, H - pt.peak - 2, barWidth, 2);
         }
+      } else if (this.style === 'waveform') {
+        // ── 2. SMOOTH SINE WAVEFORM ──
+        this.ctx.beginPath();
+        this.ctx.lineWidth = 2.5;
+        this.ctx.strokeStyle = color;
+        this.ctx.shadowBlur = 12;
+        this.ctx.shadowColor = color;
 
-        // Interpolate heights
-        pt.currentHeight += (pt.targetHeight - pt.currentHeight) * pt.speed;
+        const midY = H / 2;
+        const amp = isSpeaking ? 24 : (isListening ? 30 : 6);
+        const freq = isSpeaking ? 0.04 : (isListening ? 0.06 : 0.02);
 
-        const w = 4;
-        const h = pt.currentHeight;
-        const x = (this.canvas.width / this.points.length) * i;
-        const y = (this.canvas.height - h) / 2;
+        this.ctx.moveTo(0, midY);
+        for (let x = 0; x < W; x += 3) {
+          const y = midY + Math.sin(x * freq + Date.now() * 0.006) * amp * Math.sin((x / W) * Math.PI);
+          this.ctx.lineTo(x, y);
+        }
+        this.ctx.stroke();
+
+        // Secondary subtle harmonic wave
+        this.ctx.beginPath();
+        this.ctx.lineWidth = 1;
+        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        for (let x = 0; x < W; x += 4) {
+          const y = midY + Math.cos(x * freq * 1.5 - Date.now() * 0.004) * (amp * 0.5) * Math.sin((x / W) * Math.PI);
+          this.ctx.lineTo(x, y);
+        }
+        this.ctx.stroke();
+      } else if (this.style === 'matrix') {
+        // ── 3. MATRIX GLYPH STREAM ──
+        this.ctx.font = '10px "Share Tech Mono"';
+        this.ctx.fillStyle = color;
+        this.ctx.shadowBlur = 8;
+        this.ctx.shadowColor = color;
+
+        for (let drop of this.matrixDrops) {
+          const char = drop.chars[Math.floor(Math.random() * drop.chars.length)];
+          this.ctx.fillText(char, drop.x, drop.y);
+          drop.y += drop.speed * (isSpeaking ? 3 : (isListening ? 4 : 1));
+          if (drop.y > H) drop.y = 0;
+        }
+      } else if (this.style === 'core') {
+        // ── 4. QUANTUM PULSE SPHERE ──
+        const centerX = W / 2;
+        const centerY = H / 2;
+        const pulse = (isSpeaking ? Math.sin(Date.now() * 0.01) * 8 : (isListening ? Math.random() * 12 : 2));
+
+        this.ctx.strokeStyle = color;
+        this.ctx.lineWidth = 1.5;
+        this.ctx.shadowBlur = 15;
+        this.ctx.shadowColor = color;
 
         this.ctx.beginPath();
-        this.ctx.roundRect(x, y, w, h, 2);
-        this.ctx.fill();
+        this.ctx.arc(centerX, centerY, 14 + pulse, 0, Math.PI * 2);
+        this.ctx.stroke();
+
+        for (let p of this.particles) {
+          p.angle += p.speed;
+          const r = p.baseRadius + pulse + (Math.sin(Date.now() * 0.005 + p.angle) * 6);
+          const px = centerX + Math.cos(p.angle) * r;
+          const py = centerY + Math.sin(p.angle) * r;
+
+          this.ctx.fillStyle = color;
+          this.ctx.beginPath();
+          this.ctx.arc(px, py, p.size, 0, Math.PI * 2);
+          this.ctx.fill();
+        }
       }
 
       this.animationId = requestAnimationFrame(draw);
@@ -546,22 +742,92 @@ function updateStatusText(text) {
   if (el) el.textContent = text;
 }
 
-// ── SYSTEM COMMAND RUNNER ──
+// ── SYSTEM COMMAND RUNNER & AUTOCOMPLETE ──
+const COMMAND_LIST = [
+  { cmd: "/help", desc: "List all sovereign CLI triggers" },
+  { cmd: "/status", desc: "System diagnostics & cluster status" },
+  { cmd: "/scan", desc: "Audit directory files & integrity" },
+  { cmd: "/compile", desc: "Safe AST compilation checks" },
+  { cmd: "/deploy", desc: "Vercel release deployment checklist" },
+  { cmd: "/matrix", desc: "Toggle full-screen digital rain overlay" },
+  { cmd: "/sound", desc: "Toggle ambient cyber synth drone" },
+  { cmd: "/diagnostics", desc: "Full hardware & network benchmark" },
+  { cmd: "/benchmark", desc: "Model latency & speed stress test" },
+  { cmd: "/export", desc: "Download chat transcript (.md)" },
+  { cmd: "/clear", desc: "Reset active chat history" },
+  { cmd: "/theme nebula", desc: "Switch to Nebula Core (Cyan/Purple)" },
+  { cmd: "/theme squadron", desc: "Switch to Squadron 42 (Gold/Tactical)" },
+  { cmd: "/theme amber", desc: "Switch to Amber Matrix (Amber/Orange)" }
+];
+
 const MOCK_COMMANDS = {
   "help": {
-    text: "Sovereign CLI Triggers:\n- `/scan`: Searches local repository structures.\n- `/compile`: Triggers safe code evaluation checks.\n- `/deploy`: Displays platform release checklist.\n- `/status`: Returns active system heartbeat stats.\n- `/theme <nebula|squadron|amber>`: Toggles color configurations."
+    text: "### Sovereign Matrix CLI Triggers\n" +
+          "- `/scan`: Searches local repository structures and verifies integrity.\n" +
+          "- `/compile`: Triggers safe code evaluation and syntax AST checks.\n" +
+          "- `/deploy`: Displays platform release checklist and cloud pipeline state.\n" +
+          "- `/status`: Returns active system heartbeat stats.\n" +
+          "- `/matrix`: Toggles full-screen cyber matrix digital rain overlay.\n" +
+          "- `/sound`: Toggles ambient cyber synth drone.\n" +
+          "- `/diagnostics`: Runs deep hardware & neural network diagnostics.\n" +
+          "- `/benchmark`: Runs live throughput comparison across all 4 models.\n" +
+          "- `/export`: Exports current conversation transcript.\n" +
+          "- `/clear`: Clears active conversation.\n" +
+          "- `/theme <nebula|squadron|amber>`: Toggles color configurations."
   },
   "scan": {
-    text: "Scanning project directory: c:\\Users\\wjhmo\\Downloads\\ipo-brain (2)\nFiles detected: 5\n- style.css (Modified Scifi HUD Style Sheet)\n- app.js (Interaction Controller Code)\n- index.html (Sovereign Portal Page)\n- server.py (Multi-Threaded Server Engine)\n- README.md (Setup Details)\n\nScan integrity audit passed successfully. No vulnerabilities identified."
+    text: "### Directory Audit Report\n" +
+          "**Target**: `c:\\Users\\wjhmo\\Downloads\\ipo-brain (2)`\n\n" +
+          "```bash\n" +
+          "[OK] style.css          (24.8 KB) - Scifi HUD Style Sheet\n" +
+          "[OK] app.js             (38.2 KB) - Matrix Interaction Core\n" +
+          "[OK] index.html         (68.5 KB) - Sovereign Portal Platform\n" +
+          "[OK] server.py          (4.5 KB)  - Threaded Python HTTP Host\n" +
+          "[OK] api/chat.py        (9.9 KB)  - Serverless AI Endpoint\n" +
+          "```\n\n" +
+          "**Integrity Status**: 100% Passed. Zero syntax conflicts detected."
   },
   "compile": {
-    text: "Running safe syntax diagnostics...\nChecking index.html syntax... [OK]\nValidating CSS configurations... [OK]\nRunning JS integrity loops... [OK]\nCompilation successful. Codebase ready for release."
+    text: "### Codebase Syntax & AST Diagnostics\n" +
+          "- Checking `index.html` structure: **VALID [200 OK]**\n" +
+          "- Validating CSS glassmorphism & color variables: **PASS**\n" +
+          "- Testing Web Audio API synthesizer nodes: **PASS**\n" +
+          "- Testing SpeechSynthesis & Recognition gateways: **READY**\n\n" +
+          "🎉 **Compilation smoke check passed successfully.** Ready for deployment."
   },
   "deploy": {
-    text: "Platform Release Checklist:\n1. Event Bus activation check [DONE]\n2. Custom visualizer engine rendering loops [DONE]\n3. API Route compilation [DONE]\n4. TTS/STT sound synthesis testing [DONE]\n\nRelease candidates are green. Deploy check finished."
+    text: "### Platform Release Checklist\n" +
+          "1. [x] Event Bus real-time stream active\n" +
+          "2. [x] Multi-mode visualizer rendering loop online\n" +
+          "3. [x] Local Python server (`:8794`) & Vercel serverless proxy active\n" +
+          "4. [x] Sovereign state database synced\n\n" +
+          "🚀 **All release gates verified green.** Live URL: https://ipo-brain.com"
   },
   "status": {
-    text: "Heartbeat status overview:\n- Sovereign Core: Online\n- Auto-Fix Engine: Available\n- Visualizer: Active\n- Audio Synth: Loaded\n- Stripe Sync Token: Active"
+    text: "### Core Heartbeat Overview\n" +
+          "- **Sovereign Gateway**: Online (`port 8794`)\n" +
+          "- **Active Model**: Gemini 3.5 Flash (Latency ~0.15s)\n" +
+          "- **Auto-Fix Sandbox**: Standby\n" +
+          "- **Visualizer**: Multi-Mode Active\n" +
+          "- **Ambient Synth Drone**: Initialized\n" +
+          "- **Database Integrity**: SQLite LocalStorage Matrix Synced"
+  },
+  "diagnostics": {
+    text: "### Deep Hardware & Network Benchmark\n" +
+          "- **CPU Core Scheduling**: 12 Virtual Threads Allocated\n" +
+          "- **VRAM Neural Allocation**: 4.8 GB Reserved\n" +
+          "- **Client Roundtrip Latency**: `12ms`\n" +
+          "- **Web Audio Subsystem**: Sample Rate 48,000 Hz (32-bit float)\n" +
+          "- **Memory Leak Index**: `0.00%` (Garbage Collector Optimal)"
+  },
+  "benchmark": {
+    text: "### Multi-Model Throughput Benchmark\n\n" +
+          "| Model | Specialty | Latency | Accuracy | Throughput |\n" +
+          "| :--- | :--- | :--- | :--- | :--- |\n" +
+          "| **Gemini 3.5 Flash** | Speed & Summaries | **0.15s** | 94.0% | **185 tok/s** |\n" +
+          "| **Claude 3.5 Sonnet** | Coding & Refactor | 0.78s | **98.2%** | 82 tok/s |\n" +
+          "| **Sovereign Core** | Autonomous Ops | 1.20s | **99.5%** | 65 tok/s |\n" +
+          "| **Auto-Fix Engine** | Self-Healing Diffs | 0.45s | 92.8% | 140 tok/s |"
   }
 };
 
@@ -573,16 +839,151 @@ function runCommand(commandText) {
     const tName = parts[1];
     if (tName === 'nebula' || tName === 'squadron' || tName === 'amber') {
       changeTheme(tName);
-      return `Theme successfully swapped to: ${tName.toUpperCase()}`;
+      return `Theme successfully swapped to: **${tName.toUpperCase()}**`;
     }
-    return "Incorrect theme. Try: /theme nebula, /theme squadron, or /theme amber";
+    return "Incorrect theme name. Try: `/theme nebula`, `/theme squadron`, or `/theme amber`";
+  }
+
+  if (cleanCmd === 'matrix') {
+    toggleMatrixRain();
+    return "Toggled Fullscreen Matrix Cyber Glyph Overlay.";
+  }
+
+  if (cleanCmd === 'sound') {
+    const active = synth.toggleAmbientDrone();
+    const soundBtn = document.getElementById('btn-sound-toggle');
+    if (soundBtn) soundBtn.classList.toggle('active', active);
+    return active ? "🔊 **Ambient Cyber Drone Activated**." : "🔇 **Ambient Cyber Drone Muted**.";
+  }
+
+  if (cleanCmd === 'export') {
+    exportActiveChat('md');
+    return "Conversation transcript export generated and downloaded.";
+  }
+
+  if (cleanCmd === 'clear') {
+    clearActiveSession();
+    return "Active session conversation cleared.";
   }
 
   if (MOCK_COMMANDS[cleanCmd]) {
     return MOCK_COMMANDS[cleanCmd].text;
   }
 
-  return `System error: Unknown trigger command "${commandText}". Type /help to see all commands.`;
+  return `System alert: Unknown command "${commandText}". Type \`/help\` to view all valid triggers.`;
+}
+
+// ── MARKDOWN & CODE FORMATTER ──
+function formatMarkdown(text) {
+  if (!text) return '';
+  let html = text;
+
+  // Escape HTML tags to prevent XSS
+  html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  // Triple backtick code blocks with copy buttons
+  html = html.replace(/```([a-zA-Z0-9_\-]+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+    const language = lang || 'code';
+    return `
+      <div class="custom-code-block">
+        <div class="code-header">
+          <span class="code-lang">${language}</span>
+          <button class="btn-copy" onclick="copyCodeText(this)"><span class="copy-icon">📋</span> Copy</button>
+        </div>
+        <pre class="code-content"><code>${code.trim()}</code></pre>
+      </div>
+    `;
+  });
+
+  // Inline code `code`
+  html = html.replace(/`([^`]+)`/g, '<span class="code-inline">$1</span>');
+
+  // Headings
+  html = html.replace(/^### (.*$)/gim, '<h4 style="color:var(--accent-cyan);margin:8px 0 4px;font-family:var(--font-display);">$1</h4>');
+  html = html.replace(/^## (.*$)/gim, '<h3 style="color:#fff;margin:10px 0 6px;font-family:var(--font-display);">$1</h3>');
+
+  // Bold & Italic
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+  // Tables
+  if (html.includes('|')) {
+    const lines = html.split('\n');
+    let inTable = false;
+    let tableHtml = '';
+    const newLines = [];
+
+    for (let line of lines) {
+      if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
+        if (!inTable) {
+          inTable = true;
+          tableHtml = '<table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:12px;font-family:var(--font-mono);background:rgba(0,0,0,0.3);border:1px solid var(--border-color);border-radius:6px;overflow:hidden;">';
+        }
+        if (line.includes('---')) continue;
+        const cells = line.split('|').filter((_, idx, arr) => idx > 0 && idx < arr.length - 1);
+        tableHtml += '<tr>' + cells.map(c => `<td style="padding:6px 10px;border:1px solid rgba(255,255,255,0.06);">${c.trim()}</td>`).join('') + '</tr>';
+      } else {
+        if (inTable) {
+          tableHtml += '</table>';
+          newLines.push(tableHtml);
+          inTable = false;
+        }
+        newLines.push(line);
+      }
+    }
+    if (inTable) {
+      tableHtml += '</table>';
+      newLines.push(tableHtml);
+    }
+    html = newLines.join('\n');
+  }
+
+  // Line breaks
+  html = html.replace(/\n/g, '<br>');
+  return html;
+}
+
+// ── INTERACTIVE PLAN SIMULATOR ──
+function simulatePlan(btn) {
+  synth.playClick();
+  const summaryBox = btn.closest('.summary-container');
+  if (!summaryBox) return;
+  
+  const progressContainer = summaryBox.querySelector('.plan-progress-container');
+  const progressBar = summaryBox.querySelector('.plan-progress-bar');
+  const statusTag = summaryBox.querySelector('.summary-tag-status');
+  
+  if (progressContainer && progressBar) {
+    progressContainer.style.display = 'block';
+    btn.disabled = true;
+    btn.innerHTML = '⚙️ Executing Simulation...';
+
+    let pct = 0;
+    const stages = [
+      { at: 25, label: "ANALYZING_AST", status: "PROCESSING" },
+      { at: 55, label: "COMPILING_MODULES", status: "COMPILING" },
+      { at: 85, label: "VERIFYING_DEPLOYMENT", status: "VALIDATING" },
+      { at: 100, label: "EXECUTION_COMPLETE", status: "VERIFIED & READY" }
+    ];
+
+    const timer = setInterval(() => {
+      pct += 5;
+      progressBar.style.width = `${pct}%`;
+      const curStage = stages.find(s => pct <= s.at);
+      if (curStage && statusTag) {
+        statusTag.textContent = `Status: ${curStage.status}`;
+      }
+
+      if (pct >= 100) {
+        clearInterval(timer);
+        synth.playSuccess();
+        btn.innerHTML = '✅ Plan Executed Successfully';
+        btn.style.borderColor = '#10b981';
+        btn.style.color = '#10b981';
+        addEventLog(`Simulated plan execution cycle successfully finished.`, "success");
+      }
+    }, 120);
+  }
 }
 
 // ── INITIALIZING THE CHAT INTERFACE ──
@@ -611,7 +1012,7 @@ function loadSession(id) {
 
   // Update active labels
   document.getElementById('active-title-label').textContent = session.title;
-  document.getElementById('active-model-label').textContent = MODELS[activeModel].name;
+  document.getElementById('active-model-label').textContent = MODELS[activeModel]?.name || 'Gemini 3.5 Flash';
 
   // Render messages
   const feed = document.getElementById('chat-feed');
@@ -642,7 +1043,7 @@ function renderMessage(msg) {
         <div class="summary-heading">${data.title}</div>
         <div class="summary-metadata">
           <span class="summary-tag">Scope: ${data.scope}</span>
-          <span class="summary-tag">Status: ${data.status}</span>
+          <span class="summary-tag summary-tag-status">Status: ${data.status}</span>
         </div>
         <div class="summary-block">
           <div class="summary-block-title">Key Objective</div>
@@ -657,10 +1058,14 @@ function renderMessage(msg) {
           <pre class="code-content"><code>${data.code}</code></pre>
         </div>
         ` : ''}
+        <button class="btn-sim-plan" onclick="simulatePlan(this)">⚡ Simulate Plan Execution</button>
+        <div class="plan-progress-container">
+          <div class="plan-progress-bar"></div>
+        </div>
       </div>
     `;
   } else {
-    bubble.textContent = msg.text;
+    bubble.innerHTML = formatMarkdown(msg.text);
   }
 
   // Speak aloud option
@@ -704,29 +1109,29 @@ function handleSendMessage() {
   if (!text) return;
 
   input.value = '';
+  hideCommandAutocomplete();
   synth.playClick();
 
   // 1. Add User message
   db.addMessage(currentSessionId, 'user', 'Commander', text);
   renderMessage({ role: 'user', sender: 'Commander', text: text });
 
-  // 2. Mock thinking state
+  // 2. Thinking state
   const feed = document.getElementById('chat-feed');
   const loader = document.createElement('div');
   loader.className = 'msg-container bot thinking-msg';
-  loader.innerHTML = `<div class="msg-bubble" style="color: var(--text-muted);">Thinking...</div>`;
+  loader.innerHTML = `<div class="msg-bubble" style="color: var(--text-muted);"><span class="laser-pulse">⚡</span> Analyzing telemetry & query...</div>`;
   feed.appendChild(loader);
   feed.scrollTop = feed.scrollHeight;
 
   setTimeout(async () => {
-    // Remove thinking message
     loader.remove();
 
     // Check if command
     if (text.startsWith('/')) {
       const resp = runCommand(text);
-      db.addMessage(currentSessionId, 'bot', MODELS[activeModel].name, resp);
-      renderMessage({ role: 'bot', sender: MODELS[activeModel].name, text: resp });
+      db.addMessage(currentSessionId, 'bot', MODELS[activeModel]?.name || 'Sovereign Core', resp);
+      renderMessage({ role: 'bot', sender: MODELS[activeModel]?.name || 'Sovereign Core', text: resp });
       synth.playSuccess();
       return;
     }
@@ -752,13 +1157,12 @@ function handleSendMessage() {
       
       synth.playBeep();
     } catch (e) {
-      // Offline fallback processing
       const fallbackReply = generateFallbackBotReply(text);
       db.addMessage(currentSessionId, 'bot', MODELS[activeModel].name, fallbackReply.text, fallbackReply.isSummary, fallbackReply.summaryData);
       renderMessage({ role: 'bot', sender: MODELS[activeModel].name, text: fallbackReply.text, isSummary: fallbackReply.isSummary, summaryData: fallbackReply.summaryData });
       synth.playBeep();
     }
-  }, 1000);
+  }, 700);
 }
 
 function generateFallbackBotReply(input) {
@@ -781,13 +1185,13 @@ function generateFallbackBotReply(input) {
 
   if (query.includes('status') || query.includes('check')) {
     return {
-      text: "Diagnosing active cores:\n\n- Brain module: ACTIVE (99% capacity)\n- Web Audio Synthesizer: READY\n- Voice Recognition: STANDBY\n- File Scan Integrity: VERIFIED\n\nAll systems are operating nominally. No action required.",
+      text: "### Active Cores Diagnostics\n\n- **Brain module**: ACTIVE (99% capacity)\n- **Web Audio Synthesizer**: READY\n- **Voice Recognition**: STANDBY\n- **File Scan Integrity**: VERIFIED\n\nAll systems are operating nominally. No action required.",
       isSummary: false
     };
   }
 
   return {
-    text: `Understood commander. I have forwarded your message to the Sovereign Overmind model grid. Let me know if you would like to run any file checks or evaluate compilation logs.`,
+    text: `Understood Commander. I have dispatched your instruction to the **${MODELS[activeModel]?.name || 'Sovereign Core'}** grid.\n\nYou can execute \`/diagnostics\` to check cluster performance, or \`/export\` to download your session transcript.`,
     isSummary: false
   };
 }
@@ -796,8 +1200,16 @@ function renderSidebar() {
   const list = document.getElementById('history-scroll-area');
   if (!list) return;
 
+  const searchInput = document.getElementById('search-history');
+  const filter = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
   list.innerHTML = '';
-  db.sessions.forEach(sess => {
+  const filteredSessions = db.sessions.filter(s => {
+    if (!filter) return true;
+    return s.title.toLowerCase().includes(filter) || s.messages.some(m => m.text && m.text.toLowerCase().includes(filter));
+  });
+
+  filteredSessions.forEach(sess => {
     const item = document.createElement('div');
     item.className = `history-item ${sess.id === currentSessionId ? 'active' : ''}`;
     item.dataset.id = sess.id;
@@ -827,7 +1239,9 @@ function renderSidebar() {
     const delBtn = document.createElement('button');
     delBtn.className = 'btn-delete-history';
     delBtn.innerHTML = '🗑️';
-    delBtn.onclick = () => {
+    delBtn.title = 'Delete Session';
+    delBtn.onclick = (e) => {
+      e.stopPropagation();
       synth.playWarning();
       db.deleteSession(sess.id);
       renderSidebar();
@@ -849,6 +1263,60 @@ function createNewSession() {
   const id = db.addSession('System Task Command', activeModel, 'SYS');
   renderSidebar();
   loadSession(id);
+}
+
+function clearActiveSession() {
+  const sess = db.getSession(currentSessionId);
+  if (sess) {
+    sess.messages = [];
+    db.save();
+    loadSession(currentSessionId);
+    synth.playWarning();
+    addEventLog("Active chat session messages cleared.", "warning");
+  }
+}
+
+function exportActiveChat(format = 'md') {
+  const session = db.getSession(currentSessionId);
+  if (!session) return;
+
+  synth.playSuccess();
+  let content = "";
+  let mimeType = "text/markdown";
+  let filename = `sovereign_chat_${Date.now()}.${format}`;
+
+  if (format === 'json') {
+    content = JSON.stringify(session, null, 2);
+    mimeType = "application/json";
+  } else {
+    content = `# Sovereign Matrix Chat Transcript\n`;
+    content += `**Session Title**: ${session.title}\n`;
+    content += `**Model**: ${MODELS[session.model]?.name || session.model}\n`;
+    content += `**Date**: ${session.timestamp}\n\n---\n\n`;
+
+    session.messages.forEach(m => {
+      content += `### ${m.sender} (${m.role.toUpperCase()})\n`;
+      content += `${m.text}\n\n`;
+      if (m.isSummary && m.summaryData) {
+        content += `> **Summary Plan: ${m.summaryData.title}**\n`;
+        content += `> Scope: ${m.summaryData.scope} | Status: ${m.summaryData.status}\n`;
+        content += `> Objective: ${m.summaryData.objective}\n\n`;
+        if (m.summaryData.code) {
+          content += "```" + (m.summaryData.codeLang || '') + "\n" + m.summaryData.code + "\n```\n\n";
+        }
+      }
+      content += `---\n\n`;
+    });
+  }
+
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+  addEventLog(`Exported session transcript to ${filename}`, "success");
 }
 
 function changeTheme(themeName) {
@@ -884,12 +1352,108 @@ function copyCodeText(button) {
   const codeBlock = button.closest('.custom-code-block').querySelector('code');
   if (codeBlock) {
     navigator.clipboard.writeText(codeBlock.textContent).then(() => {
-      synth.playClick();
+      synth.playSuccess();
       button.innerHTML = '✅ Copied!';
       setTimeout(() => {
         button.innerHTML = '<span class="copy-icon">📋</span> Copy';
       }, 2000);
     });
+  }
+}
+
+// ── COMMAND AUTOCOMPLETE FLOATING BOX ──
+function setupCommandAutocomplete() {
+  const input = document.getElementById('composer-text');
+  const box = document.getElementById('command-autocomplete-box');
+  if (!input || !box) return;
+
+  input.addEventListener('input', (e) => {
+    synth.playKeyTick();
+    const val = input.value;
+    if (val.startsWith('/')) {
+      const query = val.slice(1).toLowerCase();
+      const matches = COMMAND_LIST.filter(c => c.cmd.slice(1).toLowerCase().startsWith(query));
+      if (matches.length > 0) {
+        box.innerHTML = matches.map((m, idx) => `
+          <div class="cmd-item ${idx === 0 ? 'selected' : ''}" onclick="selectCommand('${m.cmd}')">
+            <span class="cmd-name">${m.cmd}</span>
+            <span class="cmd-desc">${m.desc}</span>
+          </div>
+        `).join('');
+        box.classList.add('visible');
+      } else {
+        box.classList.remove('visible');
+      }
+    } else {
+      box.classList.remove('visible');
+    }
+  });
+}
+
+function selectCommand(cmd) {
+  const input = document.getElementById('composer-text');
+  if (input) {
+    input.value = cmd;
+    input.focus();
+  }
+  hideCommandAutocomplete();
+}
+
+function hideCommandAutocomplete() {
+  const box = document.getElementById('command-autocomplete-box');
+  if (box) box.classList.remove('visible');
+}
+
+// ── FULLSCREEN MATRIX RAIN OVERLAY ──
+let matrixRainActive = false;
+let matrixCanvas = null;
+let matrixAnimId = null;
+
+function toggleMatrixRain() {
+  matrixCanvas = document.getElementById('matrix-fullscreen-canvas');
+  if (!matrixCanvas) return;
+
+  matrixRainActive = !matrixRainActive;
+  matrixCanvas.classList.toggle('active', matrixRainActive);
+
+  if (matrixRainActive) {
+    const ctx = matrixCanvas.getContext('2d');
+    matrixCanvas.width = window.innerWidth;
+    matrixCanvas.height = window.innerHeight;
+
+    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンSOVEREIGNMATRIX';
+    const fontSize = 14;
+    const columns = Math.floor(matrixCanvas.width / fontSize);
+    const drops = Array.from({ length: columns }, () => Math.floor(Math.random() * -50));
+
+    const drawMatrix = () => {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+      ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+      ctx.fillStyle = '#00f3ff';
+      ctx.font = `${fontSize}px "Share Tech Mono"`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        ctx.fillText(text, x, y);
+
+        if (y > matrixCanvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+
+      if (matrixRainActive) {
+        matrixAnimId = requestAnimationFrame(drawMatrix);
+      }
+    };
+
+    drawMatrix();
+  } else {
+    if (matrixAnimId) cancelAnimationFrame(matrixAnimId);
   }
 }
 
@@ -926,6 +1490,29 @@ window.addEventListener('DOMContentLoaded', () => {
   visualizer = new Visualizer('voice-canvas');
   visualizer.start();
 
+  // Setup Visualizer mode buttons
+  document.querySelectorAll('.vis-mode-btn').forEach(btn => {
+    btn.onclick = () => {
+      if (visualizer) visualizer.setStyle(btn.dataset.style);
+    };
+  });
+
+  // Setup Ambient Sound Toggle
+  const soundBtn = document.getElementById('btn-sound-toggle');
+  if (soundBtn) {
+    soundBtn.onclick = () => {
+      const active = synth.toggleAmbientDrone();
+      soundBtn.classList.toggle('active', active);
+      if (active) {
+        soundBtn.innerHTML = '🔊 Synth Drone: ON';
+        addEventLog("Ambient Cyber Synth drone started.", "success");
+      } else {
+        soundBtn.innerHTML = '🔇 Synth Drone: OFF';
+        addEventLog("Ambient Cyber Synth drone stopped.", "info");
+      }
+    };
+  }
+
   // Setup STT
   initSTT();
 
@@ -954,6 +1541,9 @@ window.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+  // Setup command autocomplete
+  setupCommandAutocomplete();
+
   // Initialize view
   renderSidebar();
   loadSession(currentSessionId);
@@ -963,3 +1553,4 @@ window.addEventListener('DOMContentLoaded', () => {
   addEventLog("Sovereign matrix nervous system online.", "success");
   addEventLog("Audio synthesis nodes bound to interaction loops.", "info");
 });
+

@@ -756,26 +756,52 @@
 
       <!-- ── TAB 5: AUTONOMOUS BUILDER ── -->
       <section class="tab-view" id="view-autobuild">
-        <div class="calc-container" style="max-width:800px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="calc-container" style="max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
           <!-- Left side: inputs -->
           <div class="calc-panel">
-            <div class="calc-title">Sovereign Agent OS Builder</div>
-            <p style="color:var(--text-muted);font-size:13px;line-height:1.5;margin-bottom:15px;">
-              Enter your desired structural, visual, or layout styling instructions below. 
-              The autonomous compiler agent will process your text, edit the code repository, commit the updates, and redeploy the live website on Vercel dynamically.
+            <div class="calc-title">Sovereign Agent OS Builder &amp; Studio</div>
+            <p style="color:var(--text-muted);font-size:12px;line-height:1.5;margin-bottom:12px;">
+              Enter custom styling or layout instructions to trigger autonomous code generation and cloud deployment, or test live CSS matrix variables directly.
             </p>
-            <div class="input-group">
-              <label style="color:var(--accent-cyan);">Build Instructions (Text Prompt)</label>
-              <textarea id="autobuild-prompt" class="calc-input" style="width:100%;height:100px;background:rgba(0,0,0,0.4);border:1px solid var(--border-color);border-radius:8px;color:#fff;padding:10px;font-family:'Share Tech Mono';resize:none;" placeholder="e.g. 'Please change the header bar background to red'"></textarea>
+
+            <!-- Quick Swatches -->
+            <label style="color:var(--accent-cyan);font-size:11px;font-family:var(--font-mono);display:block;margin-bottom:6px;">LIVE COLOR MATRIX PRESETS</label>
+            <div class="theme-sandbox-grid" style="margin-bottom:14px;">
+              <div class="theme-sandbox-card" onclick="applyThemeColor('#00f3ff', 'rgba(0,243,255,0.3)', 'CYBER CYAN')">
+                <div class="theme-color-dot" style="background:#00f3ff;color:#00f3ff;"></div>
+                <span style="font-size:10px;font-family:var(--font-mono);color:#fff;">Cyber Cyan</span>
+              </div>
+              <div class="theme-sandbox-card" onclick="applyThemeColor('#bc13fe', 'rgba(188,19,254,0.3)', 'NEON PURPLE')">
+                <div class="theme-color-dot" style="background:#bc13fe;color:#bc13fe;"></div>
+                <span style="font-size:10px;font-family:var(--font-mono);color:#fff;">Neon Purple</span>
+              </div>
+              <div class="theme-sandbox-card" onclick="applyThemeColor('#10b981', 'rgba(16,185,129,0.3)', 'EMERALD')">
+                <div class="theme-color-dot" style="background:#10b981;color:#10b981;"></div>
+                <span style="font-size:10px;font-family:var(--font-mono);color:#fff;">Emerald</span>
+              </div>
+              <div class="theme-sandbox-card" onclick="applyThemeColor('#ff7b00', 'rgba(255,123,0,0.3)', 'AMBER SOLAR')">
+                <div class="theme-color-dot" style="background:#ff7b00;color:#ff7b00;"></div>
+                <span style="font-size:10px;font-family:var(--font-mono);color:#fff;">Amber Solar</span>
+              </div>
+              <div class="theme-sandbox-card" onclick="applyThemeColor('#ff0055', 'rgba(255,0,85,0.3)', 'CRIMSON')">
+                <div class="theme-color-dot" style="background:#ff0055;color:#ff0055;"></div>
+                <span style="font-size:10px;font-family:var(--font-mono);color:#fff;">Crimson</span>
+              </div>
             </div>
-            <button class="btn-sim-action" onclick="executeAutonomousBuild()" style="width:100%;margin-top:15px;">Execute Autonomous Build</button>
+
+            <div class="input-group">
+              <label style="color:var(--accent-cyan);font-size:11px;font-family:var(--font-mono);">Build Instructions (Text Prompt)</label>
+              <textarea id="autobuild-prompt" class="calc-input" style="width:100%;height:85px;background:rgba(0,0,0,0.4);border:1px solid var(--border-color);border-radius:8px;color:#fff;padding:10px;font-family:'Share Tech Mono';resize:none;font-size:12px;" placeholder="e.g. 'Shift top navbar background to dark blue'"></textarea>
+            </div>
+            <button class="btn-sim-action" onclick="executeAutonomousBuild()" style="width:100%;margin-top:10px;">⚡ Commit &amp; Deploy via Autonomous Pipeline</button>
           </div>
           <!-- Right side: logs -->
           <div class="calc-panel" style="display:flex;flex-direction:column;">
             <div class="calc-title">Deployment Pipeline Telemetry</div>
-            <div id="autobuild-logs" style="flex:1;background:rgba(0,0,0,0.6);border:1px solid var(--border-color);border-radius:8px;font-family:'Share Tech Mono';font-size:12px;color:#00f3ff;padding:10px;overflow-y:auto;height:240px;box-sizing:border-box;">
-              [SYSTEM] Builder core online.<br>
-              [SYSTEM] Ready for autonomous instructions.
+            <div id="autobuild-logs" style="flex:1;background:rgba(0,0,0,0.6);border:1px solid var(--border-color);border-radius:8px;font-family:'Share Tech Mono';font-size:12px;color:#00f3ff;padding:10px;overflow-y:auto;height:240px;box-sizing:border-box;line-height:1.4;">
+              [SYSTEM] Sovereign Autonomous Builder online.<br>
+              [SYSTEM] Connected to local IPC port 8794.<br>
+              [SYSTEM] Ready for interactive instruction triggers.
             </div>
           </div>
         </div>
@@ -834,6 +860,12 @@
           </div>
         </div>
         <div class="nav-right">
+          <!-- Ambient Sound Toggle -->
+          <button class="btn-sound-toggle" id="btn-sound-toggle" title="Toggle Ambient Cyber Drone">🔇 Synth Drone: OFF</button>
+          <!-- Matrix Rain Overlay Trigger -->
+          <button class="btn-open-pitch" onclick="toggleMatrixRain()" title="Toggle Matrix Cyber Overlay">⚡ Matrix</button>
+          <!-- Export Button -->
+          <button class="btn-open-pitch" onclick="exportActiveChat('md')" title="Export Chat Transcript (.md)">💾 Export</button>
           <!-- UNIFIED: open pitch overlay instead of separate page -->
           <button class="btn-open-pitch" id="btn-open-pitch" onclick="openPitchDeck()">📊 Presentation Deck</button>
           <div class="theme-pill-container">
@@ -882,17 +914,22 @@
       </div>
 
       <!-- Input composer panel -->
-      <div class="composer-panel">
+      <div class="composer-panel" style="position:relative;">
+        <!-- Floating Command Autocomplete Box -->
+        <div id="command-autocomplete-box" class="command-autocomplete-box"></div>
+
         <div class="composer-chips">
           <div class="quick-chip" onclick="document.getElementById('composer-text').value = '/status'; handleSendMessage();">/status</div>
           <div class="quick-chip" onclick="document.getElementById('composer-text').value = '/scan'; handleSendMessage();">/scan files</div>
           <div class="quick-chip" onclick="document.getElementById('composer-text').value = '/compile'; handleSendMessage();">/compile</div>
+          <div class="quick-chip" onclick="document.getElementById('composer-text').value = '/diagnostics'; handleSendMessage();">/diagnostics</div>
+          <div class="quick-chip" onclick="document.getElementById('composer-text').value = '/benchmark'; handleSendMessage();">/benchmark</div>
           <div class="quick-chip" onclick="document.getElementById('composer-text').value = '/deploy'; handleSendMessage();">/deploy check</div>
           <div class="quick-chip" onclick="openPitchDeck();">📊 Deck</div>
         </div>
         <div class="input-box-wrapper">
           <button class="btn-composer-action" id="btn-mic" title="Voice Capture Input">🎙️</button>
-          <input type="text" class="composer-input" id="composer-text" placeholder="Enter prompt or run command (e.g. /status)..." autocomplete="off">
+          <input type="text" class="composer-input" id="composer-text" placeholder="Enter prompt or type / for commands (/help, /status, /benchmark)..." autocomplete="off">
           <button class="btn-composer-send" id="btn-send">
             <span>Send</span> ➡️
           </button>
@@ -903,10 +940,18 @@
     <!-- ── RIGHT PANEL: SYSTEM METRICS HUD ── -->
     <aside class="metrics-panel">
       <!-- Voice Visualizer Section -->
-      <div class="panel-header">🎙️ VOICE MODULE</div>
+      <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>🎙️ VOICE &amp; FREQUENCY HUD</span>
+      </div>
       <div class="visualizer-container">
         <canvas id="voice-canvas" width="300" height="80"></canvas>
-        <div class="voice-status-indicator" id="voice-status-text">Waveform visualizer online.</div>
+        <div class="vis-mode-bar">
+          <button class="vis-mode-btn active" data-style="spectrum">Spectrum</button>
+          <button class="vis-mode-btn" data-style="waveform">Waveform</button>
+          <button class="vis-mode-btn" data-style="matrix">Matrix</button>
+          <button class="vis-mode-btn" data-style="core">Core</button>
+        </div>
+        <div class="voice-status-indicator" id="voice-status-text">Equalizer visualizer online.</div>
         <div class="voice-controls-row">
           <select id="voice-select" class="voice-select-box">
             <!-- Loaded dynamically by TTS voices -->
@@ -945,6 +990,9 @@
     </aside>
 
   </div>
+
+  <!-- Fullscreen Matrix Digital Rain Overlay Canvas -->
+  <canvas id="matrix-fullscreen-canvas"></canvas>
 
   <!-- ══════════════════════════════════════════════
        SCRIPTS — Consolidated: app.js + pitch logic
@@ -1329,6 +1377,23 @@
       .catch(err => {
         addLog(`System Error: ${err.message}`, "warning");
       });
+    }
+
+    function applyThemeColor(color, glow, name) {
+      if (typeof pitchSynth !== 'undefined') pitchSynth.tone(700, 0.08);
+      document.documentElement.style.setProperty('--accent-cyan', color);
+      document.documentElement.style.setProperty('--accent-glow', glow);
+      document.documentElement.style.setProperty('--border-color', `${color}33`);
+      document.documentElement.style.setProperty('--border-hover', `${color}66`);
+      
+      const logEl = document.getElementById('autobuild-logs');
+      if (logEl) {
+        logEl.innerHTML += `<span style="color:${color}">[THEME-STUDIO] Live CSS matrix updated: ${name} (${color})</span><br>`;
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+      if (typeof addEventLog === 'function') {
+        addEventLog(`Live theme palette shifted to ${name}`, "success");
+      }
     }
   </script>
 </body>
