@@ -410,7 +410,7 @@ body {
 .top-nav {
   height: 70px;
   border-bottom: 1px solid var(--border-color);
-  background: rgba(136, 0, 0, 0.85);
+  background: rgba(4, 7, 20, 0.6);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   display: flex;
@@ -1097,5 +1097,3 @@ body {
     z-index: 100;
   }
 }
-
-/* Autonomous update: Shifted header background to DARK RED */
