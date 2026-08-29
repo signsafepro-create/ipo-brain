@@ -1,50 +1,36 @@
-# Sovereign Matrix AI Command Hub (LILJR 3.0)
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-An ultra-premium, interactive scifi HUD command portal with built-in voice feedback, canvas wave frequency visualizers, responsive left-aligned plan summaries, multi-model selection, and real-time metric trackers.
+## Getting Started
 
----
+First, run the development server:
 
-## 🛠️ Architecture Overview
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-- **`index.html`**: Holographic scifi dashboard layout containing sidebar chat history, active model spec cards, a prompt composer console, a canvas visualizer, a speech options drop-down, system statistics sliders, and event bus logs.
-- **`style.css`**: Styling sheets configuring fonts (`Orbitron`, `Share Tech Mono`), glassmorphic containers (backdrop-blurs, glowing neon borders, reflection sweeps), and three separate high-end themes (Nebula Core, Squadron 42, Amber).
-- **`app.js`**: Dynamic interaction controller managing audio synthesis beep effects (Web Audio API), simulated speech synthesis reading (TTS) + voice capturing (STT), canvas audio frequency rendering loops, localStorage conversation records, and random stats fluctuates.
-- **`server.py`**: Lightweight, multi-threaded python server hosting all codebase pages and providing JSON chat endpoints (`/api/chat`).
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
----
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-## 🚀 Getting Started
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-### Prerequisites
-- Python 3 installed.
-- A modern browser with SpeechSynthesis capabilities (Google Chrome, Microsoft Edge, or Safari).
+## Learn More
 
-### Quick Start Instruction
-1. Execute the following command from the workspace terminal directory:
-   ```bash
-   python server.py
-   ```
-2. Once booted, navigate your browser to:
-   ```
-   http://localhost:8794
-   ```
+To learn more about Next.js, take a look at the following resources:
 
----
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## 📟 Sovereign CLI Console Triggers
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-You can execute diagnostic system operations directly from the composer console bar:
-- `/help`: Returns a catalog of available system commands.
-- `/status`: Checks core module diagnostics and heartbeat details.
-- `/scan`: Audits folders and files inside the current workspace repository.
-- `/compile`: Performs safe syntax check compilations on app assets.
-- `/deploy`: Displays the release checklist and confirmation statuses.
-- `/theme <nebula|squadron|amber>`: Switches the current color configuration theme.
+## Deploy on Vercel
 
----
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## 🌟 Interactive Highlights
-
-- **Acoustic feedback**: Trigger clicks, success beeps, and detuned warnings procedurally generated on keypress, clicks, and page loads.
-- **Live Visualizer**: Real-time canvas wave lines that react to voice readings and microphone recordings.
-- **Plan Summaries**: Generate left-aligned cards with neutral glass configurations, badges, scope indicators, objectives, and copyable unified diffs. To view a summary card, type `summary` or `plan` in the composer input box.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
