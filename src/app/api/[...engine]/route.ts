@@ -17,7 +17,7 @@ export async function POST(req: NextRequest, { params }: { params: { engine: str
 
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Omni-Router Backend Connection Failed. Is FastAPI running?' }, { status: 500 });
   }
 }

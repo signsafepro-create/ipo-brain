@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { BrainCircuit, Terminal, Cpu, Database, Activity, Send, TrendingUp, TrendingDown, ChevronDown, ChevronUp, Zap, Shield, Users, DollarSign, BarChart3, Clock, Target, ArrowUpRight, Sparkles } from 'lucide-react';
+import { BrainCircuit, Terminal, Cpu, Database, Activity, Send, TrendingUp, TrendingDown, ChevronDown, ChevronUp, Zap, Users, DollarSign, BarChart3, Clock, Target, Sparkles } from 'lucide-react';
 
 /* ================================================================
    LIVE IPO CANDIDATE INTELLIGENCE DATA

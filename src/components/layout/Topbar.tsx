@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Bell, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
 
 export default function Topbar() {
   return (

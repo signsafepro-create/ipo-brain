@@ -1,4 +1,4 @@
-import { MonitorPlay, Film, Wand2, Settings2 } from 'lucide-react';
+import { MonitorPlay, Film, Wand2 } from 'lucide-react';
 
 export default function VideoStudio() {
   return (
