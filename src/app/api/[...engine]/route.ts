@@ -9,7 +9,7 @@ export async function POST(req: NextRequest, { params }: { params: { engine: str
     const endpoint = params.engine.join('/');
     const body = await req.json();
 
-    const response = await fetch(${FASTAPI_URL}/api/${endpoint}, {
+    const response = await fetch(`${FASTAPI_URL}/api/${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),

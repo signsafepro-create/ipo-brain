@@ -1,10 +1,10 @@
-import { Share2, Twitter, Linkedin, Youtube, Rss, ArrowRight } from 'lucide-react';
+import { Share2, MessageSquare, Briefcase, Video, Rss, ArrowRight } from 'lucide-react';
 
 export default function DistributionEngine() {
   const networks = [
-    { name: 'X / Twitter', handle: '@ipo_brain', status: 'Connected', icon: Twitter, color: 'text-white' },
-    { name: 'LinkedIn', handle: 'LILJR Empire', status: 'Connected', icon: Linkedin, color: 'text-[#0a66c2]' },
-    { name: 'YouTube', handle: 'SovereignStack', status: 'Disconnected', icon: Youtube, color: 'text-[#ff0000]' },
+    { name: 'X / Twitter', handle: '@ipo_brain', status: 'Connected', icon: MessageSquare, color: 'text-white' },
+    { name: 'LinkedIn', handle: 'LILJR Empire', status: 'Connected', icon: Briefcase, color: 'text-[#0a66c2]' },
+    { name: 'YouTube', handle: 'SovereignStack', status: 'Disconnected', icon: Video, color: 'text-[#ff0000]' },
     { name: 'Newsletter', handle: 'Omni-Brain Substack', status: 'Connected', icon: Rss, color: 'text-orange-500' },
   ];
 

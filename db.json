@@ -1,0 +1,605 @@
+{
+  "users": [
+    {
+      "id": "usr_demo",
+      "email": "analyst@venture.co",
+      "passwordHash": "$2b$10$FRQhlLspJOjzuYfbHacvH.CwvjAy3sC.lQlYUGqoqJgi5Ywk8AhSO",
+      "tier": "pro",
+      "createdAt": "2026-07-19T03:18:57.342Z"
+    },
+    {
+      "id": "usr_1784435828226_tbjl9",
+      "email": "andrelapensee5@gmail.com",
+      "passwordHash": "$2b$10$VjcQJibFMCBUd7J5xVKRoewmIeH1dP4mNNLLVSuHcNVFr5/BL9hQG",
+      "tier": "institution",
+      "createdAt": "2026-07-19T04:37:08.226Z",
+      "apiKey": "ipobrain_live_owner_9988776655",
+      "balance": 1000
+    },
+    {
+      "id": "usr_1785813689238_7rml0",
+      "email": "ci-1785813688177@test.com",
+      "passwordHash": "$2b$10$NcrEGFChRLQ5u/WyjnyS4OqYUrcweajZ1mLStnINdnb2.bt/6S2SW",
+      "tier": "free",
+      "createdAt": "2026-08-04T03:21:29.239Z",
+      "apiKey": "ipobrain_live_3d958ldd8x",
+      "balance": 0
+    },
+    {
+      "id": "usr_1785813740484_rdh5j",
+      "email": "ci-1785813740328@test.com",
+      "passwordHash": "$2b$10$v2BDUC2CcCARNTOKSpJjH.3cCe7Btgrd9JrHZmcNCeRq/98hhInvy",
+      "tier": "free",
+      "createdAt": "2026-08-04T03:22:20.484Z",
+      "apiKey": "ipobrain_live_44vzm4bk22",
+      "balance": 150
+    }
+  ],
+  "candidates": [
+    {
+      "id": "anthropic",
+      "name": "Anthropic",
+      "ticker": "ANTH",
+      "sector": "AI Foundation Models",
+      "valuationLow": 600,
+      "valuationHigh": 965,
+      "ipoProbability": 0.92,
+      "confidence": 0.95,
+      "score": 82.4,
+      "timing": "immediate",
+      "timingLabel": "0-3 Months",
+      "logoChar": "A",
+      "revenue": 47,
+      "fundingStage": "Pre-IPO",
+      "keyExecutives": [
+        "Dario Amodei",
+        "Daniela Amodei",
+        "Jared Kaplan"
+      ],
+      "competitivePosition": "#2 Foundation AI provider, pioneer in steerable & safety-first models.",
+      "description": "Anthropic is a public benefit corporation founded by former OpenAI members. Their Claude family of models leads in safety, long context processing, and agentic intelligence.",
+      "signals": [
+        {
+          "type": "SEC_FILING",
+          "desc": "Confidential draft S-1 S-1/A documentation submitted",
+          "weight": 1,
+          "date": "2026-06-01"
+        },
+        {
+          "type": "HIRING",
+          "desc": "Posted Director of Investor Relations ($425K-$600K range) to structure external story",
+          "weight": 0.95,
+          "date": "2026-07-15"
+        },
+        {
+          "type": "REVENUE",
+          "desc": "$47B revenue run-rate (estimated May 2026 annualized)",
+          "weight": 0.9,
+          "date": "2026-05-31"
+        },
+        {
+          "type": "PARTNERSHIP",
+          "desc": "AWS and Google deepen multi-billion strategic cloud computing agreements",
+          "weight": 0.85,
+          "date": "2026-03-12"
+        }
+      ],
+      "history": [
+        {
+          "timestamp": "2026-01-01",
+          "dateLabel": "Jan 2026",
+          "ipoProbability": 0.65,
+          "score": 58,
+          "valuationHigh": 400
+        },
+        {
+          "timestamp": "2026-03-01",
+          "dateLabel": "Mar 2026",
+          "ipoProbability": 0.74,
+          "score": 66.5,
+          "valuationHigh": 550
+        },
+        {
+          "timestamp": "2026-05-01",
+          "dateLabel": "May 2026",
+          "ipoProbability": 0.83,
+          "score": 74.2,
+          "valuationHigh": 750
+        },
+        {
+          "timestamp": "2026-06-01",
+          "dateLabel": "Jun 2026",
+          "ipoProbability": 0.89,
+          "score": 79.8,
+          "valuationHigh": 900
+        },
+        {
+          "timestamp": "2026-07-18",
+          "dateLabel": "Current",
+          "ipoProbability": 0.92,
+          "score": 82.4,
+          "valuationHigh": 965
+        }
+      ]
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI",
+      "ticker": "OPEN",
+      "sector": "AI Foundation Models",
+      "valuationLow": 150,
+      "valuationHigh": 300,
+      "ipoProbability": 0.78,
+      "confidence": 0.88,
+      "score": 61.2,
+      "timing": "near",
+      "timingLabel": "3-6 Months",
+      "logoChar": "O",
+      "revenue": 20,
+      "fundingStage": "Pre-IPO",
+      "keyExecutives": [
+        "Sam Altman",
+        "Brad Lightcap",
+        "Sarah Friar"
+      ],
+      "competitivePosition": "Undisputed global consumer AI leader, creator of ChatGPT and the GPT series.",
+      "description": "OpenAI is the pioneer of modern generative AI, actively pivoting towards a for-profit structure to accelerate scaling and support massive infrastructure investments.",
+      "signals": [
+        {
+          "type": "STRUCTURE",
+          "desc": "Legal migration towards a standard for-profit public-ready corporation",
+          "weight": 0.95,
+          "date": "2025-12-15"
+        },
+        {
+          "type": "HIRING",
+          "desc": "Recruited heavy-hitting executive CFO Sarah Friar from Square/Nextdoor",
+          "weight": 0.9,
+          "date": "2026-01-10"
+        },
+        {
+          "type": "REVENUE",
+          "desc": "Consumer subscriptions annualized rate hits record $20B+",
+          "weight": 0.8,
+          "date": "2026-06-01"
+        }
+      ],
+      "history": [
+        {
+          "timestamp": "2026-01-01",
+          "dateLabel": "Jan 2026",
+          "ipoProbability": 0.6,
+          "score": 48,
+          "valuationHigh": 180
+        },
+        {
+          "timestamp": "2026-03-01",
+          "dateLabel": "Mar 2026",
+          "ipoProbability": 0.68,
+          "score": 54,
+          "valuationHigh": 220
+        },
+        {
+          "timestamp": "2026-05-01",
+          "dateLabel": "May 2026",
+          "ipoProbability": 0.72,
+          "score": 57,
+          "valuationHigh": 260
+        },
+        {
+          "timestamp": "2026-06-01",
+          "dateLabel": "Jun 2026",
+          "ipoProbability": 0.75,
+          "score": 59.5,
+          "valuationHigh": 280
+        },
+        {
+          "timestamp": "2026-07-18",
+          "dateLabel": "Current",
+          "ipoProbability": 0.78,
+          "score": 61.2,
+          "valuationHigh": 300
+        }
+      ]
+    },
+    {
+      "id": "databricks",
+      "name": "Databricks",
+      "ticker": "DATA",
+      "sector": "Data & AI Infrastructure",
+      "valuationLow": 55,
+      "valuationHigh": 85,
+      "ipoProbability": 0.7,
+      "confidence": 0.82,
+      "score": 48.9,
+      "timing": "near",
+      "timingLabel": "3-6 Months",
+      "logoChar": "D",
+      "revenue": 3.2,
+      "fundingStage": "Late Stage Series I",
+      "keyExecutives": [
+        "Ali Ghodsi",
+        "Keri Olson",
+        "Matei Zaharia"
+      ],
+      "competitivePosition": "Unified Lakehouse standard for enterprise-grade analytics, ML, and unified data.",
+      "description": "Databricks provides an open and unified lakehouse platform to enable massive scale data engineering, collaborative science, and custom enterprise AI model deployment.",
+      "signals": [
+        {
+          "type": "FINANCIALS",
+          "desc": "Crossed $3.2B ARR with strong gross margins and predictable cashflow",
+          "weight": 0.9,
+          "date": "2026-01-01"
+        },
+        {
+          "type": "ACQUISITION",
+          "desc": "Completed strategic acquisition of Tabular to unify Iceberg metadata format",
+          "weight": 0.8,
+          "date": "2025-11-01"
+        },
+        {
+          "type": "HIRING",
+          "desc": "Established fully staffed global public compliance and IR structures",
+          "weight": 0.85,
+          "date": "2026-02-15"
+        }
+      ],
+      "history": [
+        {
+          "timestamp": "2026-01-01",
+          "dateLabel": "Jan 2026",
+          "ipoProbability": 0.55,
+          "score": 40,
+          "valuationHigh": 60
+        },
+        {
+          "timestamp": "2026-03-01",
+          "dateLabel": "Mar 2026",
+          "ipoProbability": 0.62,
+          "score": 44,
+          "valuationHigh": 70
+        },
+        {
+          "timestamp": "2026-05-01",
+          "dateLabel": "May 2026",
+          "ipoProbability": 0.66,
+          "score": 46.5,
+          "valuationHigh": 78
+        },
+        {
+          "timestamp": "2026-07-18",
+          "dateLabel": "Current",
+          "ipoProbability": 0.7,
+          "score": 48.9,
+          "valuationHigh": 85
+        }
+      ]
+    },
+    {
+      "id": "cohere",
+      "name": "Cohere",
+      "ticker": "COHE",
+      "sector": "AI Enterprise",
+      "valuationLow": 5.5,
+      "valuationHigh": 12,
+      "ipoProbability": 0.65,
+      "confidence": 0.72,
+      "score": 31.8,
+      "timing": "medium",
+      "timingLabel": "6-12 Months",
+      "logoChar": "C",
+      "revenue": 0.8,
+      "fundingStage": "Series D",
+      "keyExecutives": [
+        "Aidan Gomez",
+        "Martin Kon",
+        "Nick Frosst"
+      ],
+      "competitivePosition": "Cloud-agnostic foundation provider focused purely on B2B translation & secure RAG.",
+      "description": "Cohere builds secure enterprise-focused large language models tailored for global businesses, delivering extreme efficiency, customization, and cloud independence.",
+      "signals": [
+        {
+          "type": "FUNDING",
+          "desc": "Secured $500M Series D round at $5.5B baseline valuation",
+          "weight": 0.85,
+          "date": "2026-02-20"
+        },
+        {
+          "type": "PARTNERSHIP",
+          "desc": "Deep integration with Oracle Cloud Infrastructure for automated SaaS search",
+          "weight": 0.75,
+          "date": "2026-03-01"
+        }
+      ],
+      "history": [
+        {
+          "timestamp": "2026-01-01",
+          "dateLabel": "Jan 2026",
+          "ipoProbability": 0.45,
+          "score": 22,
+          "valuationHigh": 8
+        },
+        {
+          "timestamp": "2026-03-01",
+          "dateLabel": "Mar 2026",
+          "ipoProbability": 0.55,
+          "score": 27,
+          "valuationHigh": 10
+        },
+        {
+          "timestamp": "2026-07-18",
+          "dateLabel": "Current",
+          "ipoProbability": 0.65,
+          "score": 31.8,
+          "valuationHigh": 12
+        }
+      ]
+    },
+    {
+      "id": "coreweave",
+      "name": "CoreWeave",
+      "ticker": "CRWV",
+      "sector": "AI Infrastructure",
+      "valuationLow": 15,
+      "valuationHigh": 25,
+      "ipoProbability": 0.55,
+      "confidence": 0.68,
+      "score": 28.1,
+      "timing": "medium",
+      "timingLabel": "6-12 Months",
+      "logoChar": "W",
+      "revenue": 2.5,
+      "fundingStage": "Late Stage",
+      "keyExecutives": [
+        "Michael Intrator",
+        "Brian Venturo"
+      ],
+      "competitivePosition": "Elite Tier-1 specialized GPU cloud provider backed directly by NVIDIA.",
+      "description": "CoreWeave is a specialized cloud provider built for compute-intensive workloads. They operate state-of-the-art data centers packed with high-end NVIDIA accelerators for rapid training.",
+      "signals": [
+        {
+          "type": "CONTRACT",
+          "desc": "Multi-billion dollar long-term contract signed with Microsoft for GPU capacity",
+          "weight": 0.9,
+          "date": "2026-02-01"
+        },
+        {
+          "type": "FINANCING",
+          "desc": "Secured a massive $7.5B debt facility to fund capital equipment purchases",
+          "weight": 0.8,
+          "date": "2026-01-20"
+        }
+      ],
+      "history": [
+        {
+          "timestamp": "2026-01-01",
+          "dateLabel": "Jan 2026",
+          "ipoProbability": 0.38,
+          "score": 18,
+          "valuationHigh": 16
+        },
+        {
+          "timestamp": "2026-04-01",
+          "dateLabel": "Apr 2026",
+          "ipoProbability": 0.48,
+          "score": 24,
+          "valuationHigh": 20
+        },
+        {
+          "timestamp": "2026-07-18",
+          "dateLabel": "Current",
+          "ipoProbability": 0.55,
+          "score": 28.1,
+          "valuationHigh": 25
+        }
+      ]
+    },
+    {
+      "id": "perplexity",
+      "name": "Perplexity AI",
+      "ticker": "PERP",
+      "sector": "AI Search",
+      "valuationLow": 3,
+      "valuationHigh": 8,
+      "ipoProbability": 0.45,
+      "confidence": 0.6,
+      "score": 19.4,
+      "timing": "long",
+      "timingLabel": "12+ Months",
+      "logoChar": "P",
+      "revenue": 0.2,
+      "fundingStage": "Series B",
+      "keyExecutives": [
+        "Aravind Srinivas",
+        "Denis Yarats"
+      ],
+      "competitivePosition": "Answering engine directly challenging legacy search with conversational retrieval.",
+      "description": "Perplexity AI is a semantic conversational search engine that delivers direct, cited answers to complex queries, pioneering a new era of zero-link web answers.",
+      "signals": [
+        {
+          "type": "TRAFFIC",
+          "desc": "Crossed 100M+ queries monthly with exponential consumer brand expansion",
+          "weight": 0.7,
+          "date": "2026-06-01"
+        },
+        {
+          "type": "FUNDING",
+          "desc": "Raised $500M at a $3B valuation from high-profile technology partners",
+          "weight": 0.75,
+          "date": "2026-01-15"
+        }
+      ],
+      "history": [
+        {
+          "timestamp": "2026-01-01",
+          "dateLabel": "Jan 2026",
+          "ipoProbability": 0.25,
+          "score": 10,
+          "valuationHigh": 4
+        },
+        {
+          "timestamp": "2026-04-01",
+          "dateLabel": "Apr 2026",
+          "ipoProbability": 0.35,
+          "score": 15,
+          "valuationHigh": 6
+        },
+        {
+          "timestamp": "2026-07-18",
+          "dateLabel": "Current",
+          "ipoProbability": 0.45,
+          "score": 19.4,
+          "valuationHigh": 8
+        }
+      ]
+    },
+    {
+      "id": "sanalabs",
+      "name": "Sana Labs",
+      "ticker": "SANA",
+      "sector": "AI Enterprise Software",
+      "valuationLow": 1,
+      "valuationHigh": 3,
+      "ipoProbability": 0.3,
+      "confidence": 0.45,
+      "score": 7.4,
+      "timing": "long",
+      "timingLabel": "12+ Months",
+      "logoChar": "S",
+      "revenue": 0.1,
+      "fundingStage": "Series C",
+      "keyExecutives": [
+        "Joel Hellermark"
+      ],
+      "competitivePosition": "Europe's leading corporate AI assistant and knowledge management standard.",
+      "description": "Sana Labs designs personalized AI search, knowledge management, and learning software for massive enterprises, organizing scattered documentation into a central intelligent brain.",
+      "signals": [
+        {
+          "type": "FUNDING",
+          "desc": "Closed $280M Series C funding round to expand US enterprise operations",
+          "weight": 0.65,
+          "date": "2026-04-01"
+        }
+      ],
+      "history": [
+        {
+          "timestamp": "2026-01-01",
+          "dateLabel": "Jan 2026",
+          "ipoProbability": 0.15,
+          "score": 3,
+          "valuationHigh": 1.5
+        },
+        {
+          "timestamp": "2026-07-18",
+          "dateLabel": "Current",
+          "ipoProbability": 0.3,
+          "score": 7.4,
+          "valuationHigh": 3
+        }
+      ]
+    },
+    {
+      "id": "poolside",
+      "name": "Poolside",
+      "ticker": "POOL",
+      "sector": "AI Coding",
+      "valuationLow": 2,
+      "valuationHigh": 5,
+      "ipoProbability": 0.25,
+      "confidence": 0.4,
+      "score": 9,
+      "timing": "long",
+      "timingLabel": "12+ Months",
+      "logoChar": "L",
+      "revenue": 0.05,
+      "fundingStage": "Series A",
+      "keyExecutives": [
+        "Eiso Kant",
+        "Jason Warner"
+      ],
+      "competitivePosition": "Ultra-fast coding models built purely for developer automation and enterprise repos.",
+      "description": "Poolside builds next-generation generative models specialized in software development. Founded by ex-GitHub executives, they focus on complete software engineering automation.",
+      "signals": [
+        {
+          "type": "FUNDING",
+          "desc": "Raised $500M Series A at $3B post-money valuation to construct massive scale code model",
+          "weight": 0.7,
+          "date": "2026-05-01"
+        }
+      ],
+      "history": [
+        {
+          "timestamp": "2026-01-01",
+          "dateLabel": "Jan 2026",
+          "ipoProbability": 0.1,
+          "score": 2,
+          "valuationHigh": 2
+        },
+        {
+          "timestamp": "2026-07-18",
+          "dateLabel": "Current",
+          "ipoProbability": 0.25,
+          "score": 9,
+          "valuationHigh": 5
+        }
+      ]
+    }
+  ],
+  "walletTransactions": [
+    {
+      "id": "tx_1785813689419_edrqq",
+      "userId": "usr_1785813689238_7rml0",
+      "email": "ci-1785813688177@test.com",
+      "type": "deposit",
+      "amount": 250,
+      "status": "pending",
+      "stripeSessionId": "cs_wallet_1785813689419_y8u58",
+      "createdAt": "2026-08-04T03:21:29.419Z"
+    },
+    {
+      "id": "tx_1785813740659_lz5oi",
+      "userId": "usr_1785813740484_rdh5j",
+      "email": "ci-1785813740328@test.com",
+      "type": "deposit",
+      "amount": 250,
+      "status": "completed",
+      "stripeSessionId": "cs_wallet_1785813740659_ra8g6",
+      "createdAt": "2026-08-04T03:22:20.659Z"
+    },
+    {
+      "id": "tx_1785813740698_pyzcg",
+      "userId": "usr_1785813740484_rdh5j",
+      "email": "ci-1785813740328@test.com",
+      "type": "withdrawal",
+      "amount": 100,
+      "status": "completed",
+      "createdAt": "2026-08-04T03:22:20.698Z"
+    }
+  ],
+  "events": [
+    {
+      "type": "payment",
+      "payload": {
+        "id": "tx_1785813740659_lz5oi",
+        "amount_total": 25000,
+        "currency": "usd",
+        "customer_email": "ci-1785813740328@test.com",
+        "created_at": 1785813740661,
+        "status": "completed",
+        "tier": "free"
+      },
+      "timestamp": 1785813740661
+    },
+    {
+      "type": "withdrawal",
+      "payload": {
+        "id": "tx_1785813740698_pyzcg",
+        "amount_total": 10000,
+        "customer_email": "ci-1785813740328@test.com",
+        "created_at": 1785813740700,
+        "status": "completed"
+      },
+      "timestamp": 1785813740700
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { Mic, Play, Volume2, Wand2, Waveform } from 'lucide-react';
+import { Mic, Play, Volume2, Wand2 } from 'lucide-react';
 
 export default function VoiceStudio() {
   const voices = [

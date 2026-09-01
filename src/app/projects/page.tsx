@@ -1,4 +1,4 @@
-import { FolderGit2, Github, Globe, ServerCrash } from 'lucide-react';
+import { FolderGit2, GitBranch, Globe, ServerCrash } from 'lucide-react';
 
 export default function Projects() {
   const projectsList = [
@@ -35,7 +35,7 @@ export default function Projects() {
             
             <div className="flex items-center gap-4 border-t border-white/10 pt-4 relative z-10">
               <a href="#" className="flex items-center gap-2 text-xs text-gray-400 hover:text-white transition-colors">
-                <Github className="w-4 h-4" /> {proj.repo}
+                <GitBranch className="w-4 h-4" /> {proj.repo}
               </a>
               <a href="#" className="flex items-center gap-2 text-xs text-gray-400 hover:text-blue-400 transition-colors ml-auto">
                 {proj.url}
