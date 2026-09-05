@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignSafe - AI Contract Analysis</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;color:#1a1a1a;background:#fafafa}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+        .navbar{background:#fff;border-bottom:1px solid #e5e5e5;position:sticky;top:0;z-index:100}
+        .nav-container{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}
+        .logo{display:flex;align-items:center;gap:.5rem;text-decoration:none;font-size:1.5rem;font-weight:800;color:#1e3a8a}
+        .logo-icon{font-size:1.75rem}.logo-highlight{color:#10b981}
+        .nav-links{display:flex;gap:2rem}
+        .nav-links a{text-decoration:none;color:#64748b;font-weight:500}
+        .nav-links a:hover{color:#1e3a8a}
+        .btn-primary{background:#1e3a8a;color:#fff;padding:.75rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600;border:none;cursor:pointer;transition:all .2s}
+        .btn-primary:hover{background:#1e40af;transform:translateY(-1px)}
+        .btn-secondary{background:#fff;color:#1e3a8a;border:2px solid #1e3a8a;padding:.75rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600;cursor:pointer}
+        .hero{padding:4rem 0;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;text-align:center}
+        .hero h1{font-size:3rem;font-weight:800;margin-bottom:1rem}
+        .hero p{font-size:1.25rem;opacity:.9;max-width:600px;margin:0 auto 2rem}
+        .hero-cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+        .btn-large{padding:1rem 2rem;font-size:1.1rem}
+        .btn-ghost{background:transparent;color:#fff;border:2px solid #fff;padding:1rem 2rem;border-radius:8px;text-decoration:none;font-weight:600}
+        .upload-section{padding:4rem 0;background:#fff}
+        .upload-box{max-width:600px;margin:0 auto;text-align:center}
+        .upload-area{border:3px dashed #cbd5e1;border-radius:16px;padding:3rem;margin:2rem 0;background:#f8fafc;cursor:pointer;transition:all .2s}
+        .upload-area:hover{border-color:#1e3a8a;background:#eff6ff}
+        .upload-icon{font-size:3rem;margin-bottom:1rem}
+        .upload-text{font-size:1.25rem;font-weight:600;color:#1e293b;margin-bottom:.5rem}
+        .features{padding:4rem 0;background:#f8fafc}
+        .section-header{text-align:center;margin-bottom:3rem}
+        .section-header h2{font-size:2.5rem;font-weight:800;color:#1e293b}
+        .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
+        .feature-card{background:#fff;padding:2rem;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+        .feature-icon{font-size:2.5rem;margin-bottom:1rem}
+        .feature-card h3{font-size:1.25rem;font-weight:700;margin-bottom:.5rem;color:#1e293b}
+        .feature-card p{color:#64748b}
+        .pricing{padding:4rem 0;background:#fff}
+        .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;max-width:800px;margin:0 auto}
+        .pricing-card{border:2px solid #e5e5e5;border-radius:16px;padding:2rem;text-align:center}
+        .pricing-card.featured{border-color:#1e3a8a;position:relative;transform:scale(1.05)}
+        .pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#1e3a8a;color:#fff;padding:.25rem 1rem;border-radius:20px;font-size:.875rem;font-weight:600}
+        .pricing-price{font-size:3rem;font-weight:800;color:#1e293b;margin:1rem 0}
+        .pricing-price span{font-size:1rem;color:#64748b;font-weight:400}
+        .pricing-features{list-style:none;margin:2rem 0}
+        .pricing-features li{padding:.5rem 0;color:#64748b}
+        .payment-form{display:none;max-width:400px;margin:2rem auto;padding:2rem;background:#f8fafc;border-radius:12px;text-align:left}
+        .payment-form.active{display:block}
+        .form-group{margin-bottom:1rem}
+        .form-group label{display:block;margin-bottom:.5rem;font-weight:600;color:#1e293b}
+        .form-group input{width:100%;padding:.75rem;border:1px solid #cbd5e1;border-radius:6px;font-size:1rem}
+        .payment-methods{display:flex;justify-content:center;gap:.5rem;margin-top:1rem;font-size:1.5rem}
+        .footer{background:#1e293b;color:#fff;padding:3rem 0 1rem}
+        .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+        .footer a{color:#94a3b8;text-decoration:none;display:block;margin-bottom:.5rem}
+        .footer a:hover{color:#fff}
+        .footer-bottom{border-top:1px solid #334155;padding-top:2rem;text-align:center;color:#64748b}
+        @media(max-width:768px){.hero h1{font-size:2rem}.nav-links{display:none}.pricing-card.featured{transform:none}.footer-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <nav class="navbar"><div class="container nav-container"><a href="#" class="logo"><span class="logo-icon">🛡️</span><span>Sign<span class="logo-highlight">Safe</span></span></a><div class="nav-links"><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#upload">Analyze</a></div><a href="#pricing" class="btn-primary">Get Started</a></div></nav>
+
+    <section class="hero"><div class="container"><h1>Never Sign a Contract<br>You Don't Understand</h1><p>AI-powered contract analysis that identifies risks, explains complex terms, and protects your business—in 60 seconds.</p><div class="hero-cta"><a href="#pricing" class="btn-primary btn-large">Start Free Trial</a><a href="#features" class="btn-ghost">Learn More</a></div></div></section>
+
+    <section id="upload" class="upload-section"><div class="container"><div class="upload-box"><h2>Upload Your Contract</h2><p>Get instant AI analysis. No credit card required for free tier.</p><div class="upload-area" onclick="document.getElementById('fileInput').click()"><div class="upload-icon">📄</div><div class="upload-text">Drag & drop your contract here</div><div style="color:#64748b">or click to browse (PDF, DOC, DOCX)</div><input type="file" id="fileInput" hidden accept=".pdf,.doc,.docx"></div><p style="color:#64748b;font-size:.875rem">✓ Free analysis ✓ 60-second results ✓ Bank-grade security</p></div></div></section>
+
+    <section id="features" class="features"><div class="container"><div class="section-header"><h2>Everything You Need to Sign With Confidence</h2></div><div class="features-grid"><div class="feature-card"><div class="feature-icon">⚡</div><h3>60-Second Analysis</h3><p>Get comprehensive contract review faster than making coffee.</p></div><div class="feature-card"><div class="feature-icon">🎯</div><h3>Risk Scoring</h3><p>Every clause rated Low, Medium, or High risk. Know what matters.</p></div><div class="feature-card"><div class="feature-icon">📝</div><h3>Plain English</h3><p>Complex legal terms translated into language you understand.</p></div><div class="feature-card"><div class="feature-icon">💡</div><h3>Negotiation Tips</h3><p>Get specific suggestions on what to change and how to ask.</p></div><div class="feature-card"><div class="feature-icon">🔒</div><h3>Bank-Grade Security</h3><p>256-bit encryption. Your contracts are safer with us.</p></div><div class="feature-card"><div class="feature-icon">📚</div><h3>Contract Vault</h3><p>Store and organize all your contracts in one secure place.</p></div></div></div></section>
+
+    <section id="pricing" class="pricing"><div class="container"><div class="section-header"><h2>Simple, Transparent Pricing</h2></div><div class="pricing-grid"><div class="pricing-card"><h3>Starter</h3><div class="pricing-price">Free</div><ul class="pricing-features"><li>1 contract analysis/month</li><li>Basic risk summary</li><li>Email support</li></ul><button class="btn-secondary" onclick="startFree()">Get Started Free</button></div><div class="pricing-card featured"><div class="pricing-badge">Most Popular</div><h3>Professional</h3><div class="pricing-price">$49<span>/month</span></div><ul class="pricing-features"><li>Unlimited contracts</li><li>Detailed risk analysis</li><li>Negotiation suggestions</li><li>Contract vault</li><li>Priority support</li></ul><button class="btn-primary" onclick="showPaymentForm()">Start Free Trial</button></div></div>
+
+        <div id="paymentForm" class="payment-form"><h3>Start Your Free Trial</h3><p style="color:#64748b;margin-bottom:1rem">14 days free, then $49 CAD/month. Cancel anytime.</p><div class="form-group"><label>Business Email</label><input type="email" id="email" placeholder="you@company.com" required></div><button class="btn-primary" onclick="startCheckout()" style="width:100%;margin-top:1rem">Continue to Secure Checkout</button><div class="payment-methods"><span title="Credit/Debit Card">💳</span><span title="Apple Pay">🍎</span><span title="Google Pay">🤖</span><span title="Interac">🇨🇦</span></div><p style="color:#64748b;font-size:.75rem;margin-top:1rem;text-align:center">🔒 Secured by Stripe<br>Statement: <strong>SIGNSAFE*PRO SUB</strong><br>Billed in CAD • Cancel anytime</p></div>
+    </div></section>
+
+    <footer class="footer"><div class="container"><div class="footer-grid"><div><a href="#" class="logo" style="color:#fff"><span class="logo-icon">🛡️</span><span>Sign<span style="color:#10b981">Safe</span></span></a><p style="color:#94a3b8;margin-top:1rem">AI-powered contract analysis that protects your business.</p></div><div><h4 style="margin-bottom:1rem">Product</h4><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#">Security</a><a href="#">API</a></div><div><h4 style="margin-bottom:1rem">Company</h4><a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Contact</a></div><div><h4 style="margin-bottom:1rem">Legal</h4><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookie Policy</a></div></div><div class="footer-bottom"><p>&copy; 2024 SignSafe. All rights reserved.</p><p style="color:#64748b;font-size:.875rem;margin-top:.5rem">Made with ❤️ in Canada</p></div></div></footer>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        // CONFIGURATION - Replace with your actual keys from Stripe Dashboard
+        const STRIPE_PUBLISHABLE_KEY = 'pk_test_YOUR_PUBLISHABLE_KEY_HERE';
+
+        // Initialize Stripe
+        const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+
+        function startFree() {
+            alert('🎉 Free tier activated!
+
+You can now analyze 1 contract per month. Upload your first contract to get started.');
+            document.getElementById('upload').scrollIntoView({behavior: 'smooth'});
+        }
+
+        function showPaymentForm() {
+            document.getElementById('paymentForm').classList.add('active');
+            document.getElementById('paymentForm').scrollIntoView({behavior: 'smooth'});
+        }
+
+        async function startCheckout() {
+            const email = document.getElementById('email').value;
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            const btn = document.querySelector('#paymentForm button');
+            btn.textContent = 'Loading...';
+            btn.disabled = true;
+
+            try {
+                // Call Netlify function to create checkout session
+                const response = await fetch('/.netlify/functions/create-checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+
+                if (data.url) {
+                    // Redirect to Stripe Checkout
+                    window.location.href = data.url;
+                } else {
+                    throw new Error(data.error || 'Failed to create checkout');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Payment setup failed: ' + error.message);
+                btn.textContent = 'Continue to Secure Checkout';
+                btn.disabled = false;
+            }
+        }
+
+        // File upload handling
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                alert(`📄 File selected: ${file.name}
+
+In the full version, this would:
+1. Upload to secure server
+2. AI analysis in 60 seconds
+3. Show risk report
+
+File size: ${(file.size/1024).toFixed(1)} KB`);
+            }
+        });
+
+        // Drag and drop
+        const uploadArea = document.querySelector('.upload-area');
+        uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.style.borderColor='#1e3a8a'; uploadArea.style.background='#eff6ff'; });
+        uploadArea.addEventListener('dragleave', () => { uploadArea.style.borderColor='#cbd5e1'; uploadArea.style.background='#f8fafc'; });
+        uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.style.borderColor='#cbd5e1'; uploadArea.style.background='#f8fafc'; const f=e.dataTransfer.files[0]; if(f) alert(`📄 File dropped: ${f.name}`); });
+    </script>
+</body>
+</html>

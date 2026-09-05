@@ -1,9 +1,9 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "framework": null,
-  "buildCommand": "",
-  "installCommand": "",
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
   "rewrites": [
     { "source": "/api/chat", "destination": "/api/chat.py" }
   ],

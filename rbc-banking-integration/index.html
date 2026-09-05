@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Bot - Banking Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-glow"></div>
+    <div class="dashboard-container">
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <img src="logo.jpg" alt="Trading Bot Logo" class="logo">
+                <h1>Trading Hub</h1>
+            </div>
+            <div class="profile-pill">
+                <span class="status-dot"></span>
+                <span>Connected</span>
+            </div>
+        </header>
+
+        <!-- Balance Card -->
+        <main class="main-content">
+            <div class="glass-card balance-card">
+                <p class="label">Available Trading Balance</p>
+                <h2 class="balance-amount">$24,592.80 <span class="currency">CAD</span></h2>
+                <div class="profit-indicator">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+                    <span>+2.4% today</span>
+                </div>
+            </div>
+
+            <!-- RBC Integration Section -->
+            <div class="glass-card action-card">
+                <div class="bank-header">
+                    <div class="bank-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" class="bank-icon">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3>RBC Banking Link</h3>
+                        <p class="subtext">Transfer funds instantly via RBC Mobile</p>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" id="depositBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Deposit Funds
+                    </button>
+                    <button class="btn btn-secondary" id="withdrawBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Withdraw Funds
+                    </button>
+                </div>
+                
+                <div class="secure-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <span>Secured by 256-bit encryption</span>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Redirect Modal Overlay -->
+        <div class="modal-overlay" id="redirectModal">
+            <div class="glass-card modal-content">
+                <div class="spinner"></div>
+                <h3>Redirecting to RBC Mobile...</h3>
+                <p>Opening your banking app to complete the transaction securely.</p>
+                <button class="btn btn-text" id="cancelBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const depositBtn = document.getElementById('depositBtn');
+            const withdrawBtn = document.getElementById('withdrawBtn');
+            const modal = document.getElementById('redirectModal');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            // The specific deep link URI for RBC Mobile app intent
+            const rbcDeepLink = 'rbcmobile://';
+            const rbcFallbackWeb = 'https://www1.royalbank.com/sgw1/mbanking/login';
+
+            function triggerRbcDeepLink(actionType) {
+                // Show redirect UI
+                modal.classList.add('active');
+
+                // Simulate processing delay for UI feedback
+                setTimeout(() => {
+                    // Detect if on mobile to attempt deep link, otherwise fallback to web portal
+                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                    
+                    if (isMobile) {
+                        // Attempt to open the native app
+                        window.location.href = rbcDeepLink;
+                        
+                        // Fallback mechanism if app isn't installed
+                        setTimeout(() => {
+                            if(document.visibilityState !== 'hidden') {
+                                window.location.href = rbcFallbackWeb;
+                            }
+                        }, 2500);
+                    } else {
+                        // Desktop users go straight to the web portal
+                        window.open(rbcFallbackWeb, '_blank');
+                        modal.classList.remove('active');
+                    }
+                }, 1500);
+            }
+
+            depositBtn.addEventListener('click', () => triggerRbcDeepLink('deposit'));
+            withdrawBtn.addEventListener('click', () => triggerRbcDeepLink('withdraw'));
+            
+            cancelBtn.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

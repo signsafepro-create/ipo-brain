@@ -1,0 +1,8 @@
+node_modules/
+.next/
+pulled_builds/
+_legacy_ui/
+output/
+Kimi_Agent_end_goal/
+rbc-banking-integration/
+*.zip

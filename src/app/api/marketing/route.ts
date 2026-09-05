@@ -48,8 +48,8 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, result: generatedText });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Marketing API Error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }

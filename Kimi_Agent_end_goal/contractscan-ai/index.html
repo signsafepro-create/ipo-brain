@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignSafe - AI Contract Analysis | Understand Before You Sign</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🛡️</span>
+                <span class="logo-text">Sign<span class="logo-highlight">Safe</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="demo.html">Try Demo</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="dashboard.html" class="btn-secondary">Dashboard</a>
+            </div>
+            <div class="nav-cta">
+                <a href="#upload" class="btn-primary">Analyze Contract</a>
+            </div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-icon">⚡</span>
+                    <span>Trusted by 2,000+ founders & legal teams</span>
+                </div>
+                <h1 class="hero-title">
+                    Never Sign a Contract<br>
+                    <span class="gradient-text">You Don't Understand</span>
+                </h1>
+                <p class="hero-subtitle">
+                    AI-powered contract analysis that identifies risks, explains complex terms, 
+                    and protects your business—in 60 seconds, not 6 hours.
+                </p>
+                <div class="hero-cta">
+                    <a href="demo.html" class="btn-primary btn-large">
+                        <span>Try Free Analysis</span>
+                        <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="#how-it-works" class="btn-ghost btn-large">
+                        <span class="play-icon">▶</span>
+                        See How It Works
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">50,000+</div>
+                        <div class="stat-label">Contracts Analyzed</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">$12M+</div>
+                        <div class="stat-label">Risk Value Identified</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">4.9/5</div>
+                        <div class="stat-label">User Rating</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="contract-card">
+                    <div class="contract-header">
+                        <div class="contract-icon">📄</div>
+                        <div class="contract-title">Service Agreement.pdf</div>
+                        <div class="contract-status scanning">Scanning...</div>
+                    </div>
+                    <div class="contract-content">
+                        <div class="analysis-line">
+                            <div class="analysis-dot risk-high"></div>
+                            <div class="analysis-text">Auto-renewal clause detected</div>
+                            <div class="analysis-score">High Risk</div>
+                        </div>
+                        <div class="analysis-line">
+                            <div class="analysis-dot risk-medium"></div>
+                            <div class="analysis-text">Unlimited liability exposure</div>
+                            <div class="analysis-score">Medium Risk</div>
+                        </div>
+                        <div class="analysis-line">
+                            <div class="analysis-dot risk-low"></div>
+                            <div class="analysis-text">IP ownership unclear</div>
+                            <div class="analysis-score">Low Risk</div>
+                        </div>
+                        <div class="analysis-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
+                            <span class="progress-text">75% Complete</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-badge badge-1">
+                    <span class="badge-check">✓</span>
+                    <span>Risk Found</span>
+                </div>
+                <div class="floating-badge badge-2">
+                    <span class="badge-shield">🛡️</span>
+                    <span>Protected</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="social-proof">
+        <div class="container">
+            <p class="social-label">Trusted by teams at</p>
+            <div class="logo-grid">
+                <div class="company-logo">Stripe</div>
+                <div class="company-logo">Notion</div>
+                <div class="company-logo">Figma</div>
+                <div class="company-logo">Linear</div>
+                <div class="company-logo">Vercel</div>
+                <div class="company-logo">Anthropic</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>Three Steps to Contract Confidence</h2>
+                <p>Upload any contract. Our AI analyzes every clause. You get actionable insights.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">📤</div>
+                    <h3>Upload Contract</h3>
+                    <p>Drag and drop any PDF, Word doc, or image. We support NDAs, employment agreements, service contracts, and more.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">🤖</div>
+                    <h3>AI Analysis</h3>
+                    <p>Our legal AI scans every clause, identifies risks, and translates legalese into plain English you can actually understand.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">📊</div>
+                    <h3>Get Insights</h3>
+                    <p>Receive a detailed risk report with negotiation tips, alternative language, and a clear go/no-go recommendation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Everything You Need to Sign With Confidence</h2>
+                <p>Powerful features that protect your business and save you thousands in legal fees.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>60-Second Analysis</h3>
+                    <p>Get comprehensive contract review in under a minute. No more waiting days for legal counsel.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Risk Scoring</h3>
+                    <p>Every clause rated Low, Medium, or High risk. Know exactly what needs your attention.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Plain English Explanations</h3>
+                    <p>Complex legal terms translated into simple language. Understand what you're actually agreeing to.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Negotiation Tips</h3>
+                    <p>Get specific suggestions on what to change and how to ask for it. Never negotiate blind again.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Bank-Grade Security</h3>
+                    <p>256-bit encryption, SOC 2 compliant, and strict data privacy. Your contracts are safer with us.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Contract Vault</h3>
+                    <p>Store and organize all your contracts in one place. Search, compare versions, and track renewal dates.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload CTA -->
+    <section id="upload" class="upload-section">
+        <div class="container">
+            <div class="upload-box">
+                <div class="upload-content">
+                    <h2>Try SignSafe Free</h2>
+                    <p>Upload your first contract. No credit card required.</p>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📄</div>
+                        <p class="upload-text">Drag & drop your contract here</p>
+                        <p class="upload-subtext">or click to browse (PDF, DOC, DOCX)</p>
+                        <input type="file" id="fileInput" accept=".pdf,.doc,.docx" hidden>
+                    </div>
+                    <div class="upload-features">
+                        <span class="feature-tag">✓ Free analysis</span>
+                        <span class="feature-tag">✓ No signup required</span>
+                        <span class="feature-tag">✓ 60-second results</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Loved by Founders and Legal Teams</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"SignSafe caught a liability clause that would have cost us $50K. Best $49 I've ever spent."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SM</div>
+                        <div class="author-info">
+                            <div class="author-name">Sarah Mitchell</div>
+                            <div class="author-title">CEO, TechStart Inc.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"We use SignSafe for every vendor contract now. It's like having a lawyer on demand."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JC</div>
+                        <div class="author-info">
+                            <div class="author-name">James Chen</div>
+                            <div class="author-title">COO, GrowthLabs</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Saved us $15K in legal fees our first month. The negotiation tips alone are worth 10x the price."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">EP</div>
+                        <div class="author-info">
+                            <div class="author-name">Elena Petrova</div>
+                            <div class="author-title">Founder, DesignCo</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Teaser -->
+    <section class="pricing-teaser">
+        <div class="container">
+            <div class="pricing-content">
+                <h2>Simple, Transparent Pricing</h2>
+                <p>Start free. Upgrade when you're ready.</p>
+                <div class="pricing-cards">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>Starter</h3>
+                            <div class="pricing-price">Free</div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>1 contract analysis/month</li>
+                            <li>Basic risk summary</li>
+                            <li>Email support</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-card featured">
+                        <div class="pricing-badge">Most Popular</div>
+                        <div class="pricing-header">
+                            <h3>Professional</h3>
+                            <div class="pricing-price">$49<span>/month</span></div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>Unlimited contracts</li>
+                            <li>Detailed risk analysis</li>
+                            <li>Negotiation suggestions</li>
+                            <li>Contract vault</li>
+                            <li>Priority support</li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="pricing.html" class="btn-primary btn-large">View Full Pricing</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon">🛡️</span>
+                        <span class="logo-text">Sign<span class="logo-highlight">Safe</span></span>
+                    </a>
+                    <p>AI-powered contract analysis that protects your business.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">𝕏</a>
+                        <a href="#" class="social-link">in</a>
+                        <a href="#" class="social-link">f</a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Product</h4>
+                    <a href="demo.html">Demo</a>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="#">API</a>
+                    <a href="#">Security</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <a href="#">About</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 SignSafe. All rights reserved.</p>
+                <p class="made-with">Made with ❤️ for people who hate reading fine print</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html>

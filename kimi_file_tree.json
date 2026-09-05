@@ -1,0 +1,123 @@
+{
+  "root": {
+    "name": "output",
+    "isDir": true,
+    "children": [
+      {
+        "name": "signsafe-complete.zip",
+        "size": "8111",
+        "url": "https://www.kimi.com/apiv2-files/sign-obj/kimi-fs%2Fokc%2F6rzpeckihurny%2Foutput%2Fsignsafe-complete.zip?filename=signsafe-complete.zip&sig=GeSiyh5JapAZcsHyCSekrE6-IXiovBD-gjt9Tcs49Qo=&t=o&etag=%22d28770149cc8da7013016dbb2a1520be%22",
+        "lastModifyTime": "2026-03-30T04:28:33Z",
+        "extra": {
+          "sandboxUri": "sandbox:///mnt/kimi/output/signsafe-complete.zip",
+          "etag": "\"d28770149cc8da7013016dbb2a1520be\""
+        }
+      },
+      {
+        "name": "signsafe-website.zip",
+        "size": "3919",
+        "url": "https://www.kimi.com/apiv2-files/sign-obj/kimi-fs%2Fokc%2F6rzpeckihurny%2Foutput%2Fsignsafe-website.zip?filename=signsafe-website.zip&sig=Xodg6URk63GC0qbpTr2dFaLeK95B7kvil12KA_3D7s4=&t=o&etag=%229860f428f7d34a92b74214b81d7da18a%22",
+        "lastModifyTime": "2026-02-27T00:05:07Z",
+        "extra": {
+          "sandboxUri": "sandbox:///mnt/kimi/output/signsafe-website.zip",
+          "etag": "\"9860f428f7d34a92b74214b81d7da18a\""
+        }
+      },
+      {
+        "name": "signsafe-complete",
+        "isDir": true,
+        "children": [
+          {
+            "name": "README.md",
+            "size": "1803",
+            "url": "https://www.kimi.com/apiv2-files/sign-obj/kimi-fs%2Fokc%2F6rzpeckihurny%2Foutput%2Fsignsafe-complete%2FREADME.md?filename=README.md&sig=D-BW1PX9X0Kt1KQgR-K3HLW6NfizoIIubYKzSbtFtVs=&t=o&etag=%22c9fe265a4cae79bde9145a119a78e9ee%22",
+            "lastModifyTime": "2026-03-30T04:28:33Z",
+            "extra": {
+              "sandboxUri": "sandbox:///mnt/kimi/output/signsafe-complete/README.md",
+              "etag": "\"c9fe265a4cae79bde9145a119a78e9ee\""
+            }
+          },
+          {
+            "name": "index.html",
+            "size": "13419",
+            "url": "https://www.kimi.com/apiv2-files/sign-obj/kimi-fs%2Fokc%2F6rzpeckihurny%2Foutput%2Fsignsafe-complete%2Findex.html?filename=index.html&sig=GnEn0A6_SM_5iumnZVtR8iD6ppYIKTP6UhpTAzhij5M=&t=o&etag=%22837d035ef379bdad154c809be312250b%22",
+            "lastModifyTime": "2026-03-30T04:28:33Z",
+            "extra": {
+              "sandboxUri": "sandbox:///mnt/kimi/output/signsafe-complete/index.html",
+              "etag": "\"837d035ef379bdad154c809be312250b\""
+            }
+          },
+          {
+            "name": "netlify.toml",
+            "size": "239",
+            "url": "https://www.kimi.com/apiv2-files/sign-obj/kimi-fs%2Fokc%2F6rzpeckihurny%2Foutput%2Fsignsafe-complete%2Fnetlify.toml?filename=netlify.toml&sig=ZaXOkRvdWtLXhmfULfFxOGU3Z5OUz-bz8A0QXFWbZEQ=&t=o&etag=%22e19358cab84cf15162492b451ce1c135%22",
+            "lastModifyTime": "2026-03-30T04:28:33Z",
+            "extra": {
+              "sandboxUri": "sandbox:///mnt/kimi/output/signsafe-complete/netlify.toml",
+              "etag": "\"e19358cab84cf15162492b451ce1c135\""
+            }
+          },
+          {
+            "name": "package.json",
+            "size": "153",
+            "url": "https://www.kimi.com/apiv2-files/sign-obj/kimi-fs%2Fokc%2F6rzpeckihurny%2Foutput%2Fsignsafe-complete%2Fpackage.json?filename=package.json&sig=kULOb-X9T66mty1TLy8hIkbQPiJIpm6JAXXMbrW4cHE=&t=o&etag=%223c4f02bb37bdc7347d4f03ca911f617b%22",
+            "lastModifyTime": "2026-03-30T04:28:33Z",
+            "extra": {
+              "sandboxUri": "sandbox:///mnt/kimi/output/signsafe-complete/package.json",
+              "etag": "\"3c4f02bb37bdc7347d4f03ca911f617b\""
+            }
+          },
+          {
+            "name": "netlify",
+            "isDir": true,
+            "children": [
+              {
+                "name": "functions",
+                "isDir": true,
+                "children": [
+                  {
+                    "name": "create-checkout.js",
+                    "size": "2159",
+                    "url": "https://www.kimi.com/apiv2-files/sign-obj/kimi-fs%2Fokc%2F6rzpeckihurny%2Foutput%2Fsignsafe-complete%2Fnetlify%2Ffunctions%2Fcreate-checkout.js?filename=create-checkout.js&sig=kIZW8LKTUr5GCMwmBpOv_cc5ucRNPkfCST_BOj0wjJo=&t=o&etag=%22fa68fb8facd9c68b88c8739bb1efbdc5%22",
+                    "lastModifyTime": "2026-03-30T04:28:33Z",
+                    "extra": {
+                      "sandboxUri": "sandbox:///mnt/kimi/output/signsafe-complete/netlify/functions/create-checkout.js",
+                      "etag": "\"fa68fb8facd9c68b88c8739bb1efbdc5\""
+                    }
+                  },
+                  {
+                    "name": "webhook.js",
+                    "size": "1582",
+                    "url": "https://www.kimi.com/apiv2-files/sign-obj/kimi-fs%2Fokc%2F6rzpeckihurny%2Foutput%2Fsignsafe-complete%2Fnetlify%2Ffunctions%2Fwebhook.js?filename=webhook.js&sig=jaDStOo0Yl1pdVvshcc6DQhSk18Jti3Js6PXQXBJYsI=&t=o&etag=%224d25270dd2d45e25a68d3567643ec937%22",
+                    "lastModifyTime": "2026-03-30T04:28:33Z",
+                    "extra": {
+                      "sandboxUri": "sandbox:///mnt/kimi/output/signsafe-complete/netlify/functions/webhook.js",
+                      "etag": "\"4d25270dd2d45e25a68d3567643ec937\""
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "contractscan-ai",
+        "isDir": true,
+        "children": [
+          {
+            "name": "index.html",
+            "size": "17039",
+            "url": "https://www.kimi.com/apiv2-files/sign-obj/kimi-fs%2Fokc%2F6rzpeckihurny%2Foutput%2Fcontractscan-ai%2Findex.html?filename=index.html&sig=NcwPHJUz6RSxYiZ3-G7FPrMTGOxbOY6YJruhkCkQwXQ=&t=o&etag=%2223dab40625a14dc35b92619ac22cf150%22",
+            "lastModifyTime": "2026-02-26T03:43:23Z",
+            "extra": {
+              "sandboxUri": "sandbox:///mnt/kimi/output/contractscan-ai/index.html",
+              "etag": "\"23dab40625a14dc35b92619ac22cf150\""
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "downloadUrl": "https://www.kimi.com/apiv2/okc/19c97f33-bc02-8e0d-8000-09bc4a96a1ac/output-files?sign=pWFjUBnJfzO8Ao4NgAAJvEqWoaxhZRpqoDWKYXR3S2ltaV9BZ2VudF9lbmQgZ29hbC56aXBhdWBhcGAeQO8fqCBvDXna-yxggk-KimMJQyGye2miB5PqGCgGpg"
+}
