@@ -1,19 +1,22 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, FolderGit2, Megaphone, Briefcase, BrainCircuit, MonitorPlay, Mic, Palette, Share2, BarChart3, CreditCard, Settings } from 'lucide-react';
+import { LayoutDashboard, FolderGit2, Megaphone, Briefcase, BrainCircuit, MonitorPlay, Mic, Palette, Share2, BarChart3, CreditCard, Settings, ShieldCheck, TrendingUp, Sparkles } from 'lucide-react';
 
 const menuItems = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-  { name: 'Projects', href: '/projects', icon: FolderGit2 },
-  { name: 'Marketing OS', href: '/marketing', icon: Megaphone },
-  { name: 'Media Kit', href: '/portfolio', icon: Briefcase },
   { name: 'IPO Brain', href: '/ipo-brain', icon: BrainCircuit },
-  { name: 'Video Studio', href: '/video', icon: MonitorPlay },
+  { name: 'SignSafe Scanner', href: '/contracts', icon: ShieldCheck },
+  { name: 'Trading Terminal', href: '/trading', icon: TrendingUp },
+  { name: 'Marketing OS', href: '/marketing', icon: Megaphone },
   { name: 'Voice Studio', href: '/voice', icon: Mic },
+  { name: 'Video Studio', href: '/video', icon: MonitorPlay },
+  { name: 'Matrix HUD', href: '/hud', icon: Sparkles },
+  { name: 'Media Kit', href: '/portfolio', icon: Briefcase },
   { name: 'BrandKit', href: '/brandkit', icon: Palette },
   { name: 'Distribute', href: '/distribution', icon: Share2 },
   { name: 'Analytics', href: '/analytics', icon: BarChart3 },
+  { name: 'Active Projects', href: '/projects', icon: FolderGit2 },
   { name: 'Billing', href: '/billing', icon: CreditCard },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];

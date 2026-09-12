@@ -34,3 +34,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# dist and local scratch
+dist/
+sellvia_*.json
+*.png
+*.html
+dashboard_dump.txt
+ad_campaign_manager.py
+dump_login.py
+inspect_sellvia.py
+login_bot.py
+save_cookie.py
+sellvia_automator.py

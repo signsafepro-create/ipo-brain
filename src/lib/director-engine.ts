@@ -23,14 +23,14 @@ export interface DirectorAgentResponse {
     profileSummary: string;
     sourceUrl?: string;
   }>;
-  parallelGroundingData?: any;
+  parallelGroundingData?: Record<string, unknown>;
   provider: string;
 }
 
 /**
  * Executes a real-time media & entertainment search using the Parallel Search API.
  */
-export async function queryParallelSearch(query: string, apiKey?: string): Promise<any> {
+export async function queryParallelSearch(query: string, apiKey?: string): Promise<Record<string, unknown>> {
   const token = apiKey || process.env.PARALLEL_API_KEY || process.env.PARALLEL_SEARCH_API_KEY;
 
   if (!token || token.includes('placeholder')) {
