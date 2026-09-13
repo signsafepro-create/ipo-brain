@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { Activity, BrainCircuit, ShieldCheck, TrendingUp, Megaphone, Mic, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Activity, BrainCircuit, ShieldCheck, TrendingUp, Megaphone, Mic, Sparkles, ArrowRight, CheckCircle2, Trophy } from 'lucide-react';
 
 export default function Home() {
   const stats = [
@@ -61,6 +61,13 @@ export default function Home() {
           <span className="px-3 py-1 rounded-full bg-[#00ffcc]/10 border border-[#00ffcc]/30 text-[#00ffcc] font-mono text-xs font-bold uppercase tracking-widest">
             ● All Systems Operational // Production Flagship
           </span>
+          <Link 
+            href="/portfolio"
+            className="px-3 py-1 rounded-full bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-300 font-mono text-xs flex items-center gap-1.5 transition-colors"
+          >
+            <Trophy className="w-3 h-3 text-purple-400" />
+            9 Devpost Hackathon Entries
+          </Link>
           <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gray-400 font-mono text-xs">
             19 Consolidated Subsystems
           </span>
@@ -78,6 +85,12 @@ export default function Home() {
 
         {/* Quick Launch Buttons */}
         <div className="flex flex-wrap items-center gap-4 mt-8">
+          <Link
+            href="/portfolio"
+            className="px-6 py-3.5 bg-gradient-to-r from-purple-600 to-[#00ffcc] text-black font-mono font-black text-xs uppercase tracking-wider rounded-xl hover:opacity-90 transition-all shadow-[0_0_25px_rgba(0,255,204,0.4)] flex items-center gap-2"
+          >
+            <Trophy className="w-4 h-4 text-black fill-black" /> Hackathons & Awards <ArrowRight className="w-4 h-4" />
+          </Link>
           <Link
             href="/ipo-brain"
             className="px-6 py-3.5 bg-[#00ffcc] text-black font-mono font-black text-xs uppercase tracking-wider rounded-xl hover:bg-[#00ccaa] transition-all shadow-[0_0_20px_rgba(0,255,204,0.35)] flex items-center gap-2"
@@ -100,10 +113,11 @@ export default function Home() {
             href="/hud"
             className="px-6 py-3.5 bg-purple-500/10 text-purple-300 font-mono text-xs uppercase tracking-wider rounded-xl hover:bg-purple-500/20 border border-purple-500/30 transition-all flex items-center gap-2"
           >
-            <Sparkles className="w-4 h-4 text-purple-400" /> Holographic HUD & Deck
+            <Sparkles className="w-4 h-4 text-purple-400" /> Holographic HUD
           </Link>
         </div>
       </div>
+
       
       {/* Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
