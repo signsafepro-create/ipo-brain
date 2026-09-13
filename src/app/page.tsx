@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { Activity, BrainCircuit, ShieldCheck, TrendingUp, Megaphone, Mic, Sparkles, ArrowRight, CheckCircle2, Trophy } from 'lucide-react';
+import { Activity, BrainCircuit, ShieldCheck, TrendingUp, Megaphone, Mic, Sparkles, ArrowRight, CheckCircle2, Trophy, Rocket } from 'lucide-react';
 
 export default function Home() {
   const stats = [
@@ -11,6 +11,16 @@ export default function Home() {
   ];
 
   const flagshipApps = [
+    {
+      title: 'Techstars Accelerator Hub',
+      desc: 'Official submission dossier for Techstars Toronto / Anywhere with teleprompter video pitch, $142.5M NPV model, and 1-click application copy.',
+      href: '/techstars',
+      badge: 'ACCELERATOR DOSSIER',
+      icon: Rocket,
+      color: 'border-purple-500/50 hover:border-purple-400',
+      accent: 'text-purple-300',
+      features: ['Official Techstars Q&A memo', '60s teleprompter rehearsal trainer', '$142.5M audited DCF cash flows']
+    },
     {
       title: 'IPO Brain Scanner',
       desc: 'Predictive intelligence tracking Anthropic, OpenAI, Databricks, and Stripe confidential S-1 filings and valuation run-rates.',
@@ -62,14 +72,21 @@ export default function Home() {
             ● All Systems Operational // Production Flagship
           </span>
           <Link 
-            href="/portfolio"
+            href="/techstars"
             className="px-3 py-1 rounded-full bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-300 font-mono text-xs flex items-center gap-1.5 transition-colors"
           >
-            <Trophy className="w-3 h-3 text-purple-400" />
-            9 Devpost Hackathon Entries
+            <Rocket className="w-3 h-3 text-purple-400" />
+            Techstars Accelerator Package
+          </Link>
+          <Link 
+            href="/portfolio"
+            className="px-3 py-1 rounded-full bg-[#00ffcc]/10 hover:bg-[#00ffcc]/20 border border-[#00ffcc]/30 text-[#00ffcc] font-mono text-xs flex items-center gap-1.5 transition-colors"
+          >
+            <Trophy className="w-3 h-3 text-[#00ffcc]" />
+            9 Devpost Hackathons
           </Link>
           <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gray-400 font-mono text-xs">
-            19 Consolidated Subsystems
+            20 Consolidated Subsystems
           </span>
         </div>
 
@@ -86,10 +103,16 @@ export default function Home() {
         {/* Quick Launch Buttons */}
         <div className="flex flex-wrap items-center gap-4 mt-8">
           <Link
-            href="/portfolio"
-            className="px-6 py-3.5 bg-gradient-to-r from-purple-600 to-[#00ffcc] text-black font-mono font-black text-xs uppercase tracking-wider rounded-xl hover:opacity-90 transition-all shadow-[0_0_25px_rgba(0,255,204,0.4)] flex items-center gap-2"
+            href="/techstars"
+            className="px-6 py-3.5 bg-gradient-to-r from-purple-600 to-[#00ffcc] text-black font-mono font-black text-xs uppercase tracking-wider rounded-xl hover:opacity-90 transition-all shadow-[0_0_25px_rgba(168,85,247,0.4)] flex items-center gap-2"
           >
-            <Trophy className="w-4 h-4 text-black fill-black" /> Hackathons & Awards <ArrowRight className="w-4 h-4" />
+            <Rocket className="w-4 h-4 text-black fill-black" /> Techstars Dossier <ArrowRight className="w-4 h-4" />
+          </Link>
+          <Link
+            href="/portfolio"
+            className="px-6 py-3.5 bg-white/10 text-white font-mono font-bold text-xs uppercase tracking-wider rounded-xl hover:bg-white/20 border border-white/15 transition-all flex items-center gap-2"
+          >
+            <Trophy className="w-4 h-4 text-purple-400" /> Hackathons & Awards
           </Link>
           <Link
             href="/ipo-brain"

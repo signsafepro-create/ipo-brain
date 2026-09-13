@@ -4,12 +4,13 @@ import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, FolderGit2, Megaphone, BrainCircuit, 
   MonitorPlay, Mic, Palette, Share2, BarChart3, CreditCard, Settings, 
-  ShieldCheck, TrendingUp, Sparkles, Trophy, BookOpen, LifeBuoy 
+  ShieldCheck, TrendingUp, Sparkles, Trophy, BookOpen, LifeBuoy, Rocket 
 } from 'lucide-react';
 
 const menuItems = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
   { name: 'Portfolio & Awards', href: '/portfolio', icon: Trophy },
+  { name: 'Techstars Dossier', href: '/techstars', icon: Rocket },
   { name: 'IPO Brain', href: '/ipo-brain', icon: BrainCircuit },
   { name: 'SignSafe Scanner', href: '/contracts', icon: ShieldCheck },
   { name: 'Trading Terminal', href: '/trading', icon: TrendingUp },
